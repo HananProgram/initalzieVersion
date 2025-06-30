@@ -14,8 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'agency' => \App\Http\Middleware\AgencyMiddleware::class,
+<<<<<<< HEAD
            'ensureCurrency' => \App\Http\Middleware\EnsureAgencyCurrencyIsSet::class,
 
+=======
+>>>>>>> origin/anas
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

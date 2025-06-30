@@ -30,7 +30,10 @@ class DatabaseSeeder extends Seeder
               ServiceTypeSeeder::class,
         ProviderSeeder::class,
         IntermediarySeeder::class,
+<<<<<<< HEAD
         AccountSeeder::class
+=======
+>>>>>>> origin/anas
 
         ]);
     }

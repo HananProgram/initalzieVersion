@@ -113,6 +113,7 @@ class Index extends Component
         $this->resetForm();
     }
 
+<<<<<<< HEAD
       public function calculateProfit()
     {
         if ($this->usd_buy && $this->usd_sell) {
@@ -122,6 +123,8 @@ class Index extends Component
         }
     }
 
+=======
+>>>>>>> origin/anas
     public function render()
     {
         $sales = Sale::with(['user', 'provider', 'serviceType', 'customer', 'account'])->latest()->paginate(10);
