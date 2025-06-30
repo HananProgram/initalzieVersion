@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
               ServiceTypeSeeder::class,
         ProviderSeeder::class,
         IntermediarySeeder::class,
+        AccountSeeder::class
 
         ]);
     }
