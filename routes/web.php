@@ -12,6 +12,7 @@ use App\Livewire\Agency\Permissions as AgencyPermissions;
 use App\Livewire\Agency\Profile as AgencyProfile;
 use App\Livewire\Sales\Index;
 use App\Livewire\Sales\Create;
+use App\Http\Controllers\CurrencySetupController;
 
 
 
@@ -43,18 +44,32 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/agencies/delete/{id}', \App\Livewire\Admin\DeleteAgency::class)->name('admin.delete-agency');
   
 });
+Route::middleware(['auth'])->group(function () {
+    Route::get('/setup-currency', [CurrencySetupController::class, 'form'])->name('agency.currency.setup');
+    Route::post('/setup-currency', [CurrencySetupController::class, 'store'])->name('agency.currency.store');
+});
 
 // Agency Routes
+// في routes/web.php
+use App\Livewire\Agency\SetupCurrency;
+
 Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
-    Route::get('/dashboard', AgencyDashboard::class)->name('agency.dashboard');
-    Route::get('/users', AgencyUsers::class)->name('agency.users');
-    Route::get('/roles', AgencyRoles::class)->name('agency.roles');
-    Route::get('/permissions', AgencyPermissions::class)->name('agency.permissions');
-    Route::get('/profile', AgencyProfile::class)->name('agency.profile');
-    Route::get('/services', \App\Livewire\Agency\Services::class)->name('agency.services');
-    Route::get('/sales', Index::class)->name('sales.index');
-    Route::get('/sales/create', Create::class)->name('sales.create');
+    // صفحة إعداد العملة يجب أن تكون متاحة فقط لمن لم يختار عملة
+    Route::get('/setup-currency', SetupCurrency::class)->name('agency.setup-currency');
+
+    // باقي الصفحات لا يجب الوصول إليها إلا إذا تم اختيار العملة
+    Route::middleware(['ensureCurrency'])->group(function () {
+        Route::get('/dashboard', AgencyDashboard::class)->name('agency.dashboard');
+        Route::get('/users', AgencyUsers::class)->name('agency.users');
+        Route::get('/roles', AgencyRoles::class)->name('agency.roles');
+        Route::get('/permissions', AgencyPermissions::class)->name('agency.permissions');
+        Route::get('/profile', AgencyProfile::class)->name('agency.profile');
+        Route::get('/services', \App\Livewire\Agency\Services::class)->name('agency.services');
+        Route::get('/sales', Index::class)->name('sales.index');
+        Route::get('/sales/create', Create::class)->name('sales.create');
+    });
 });
+
 
 // Logout Route
 Route::post('/logout', function () {
