@@ -34,26 +34,36 @@
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M4 10v10a1 1 0 001 1h3m10-11v11a1 1 0 01-1 1h-3m-4 0h4"></path></svg>
                 <span class="topbar-nav-text">لوحة التحكم</span>
             </a>
+            @if(auth()->user()->hasAnyPermission(['users.view','users.create','users.edit','users.delete']))
             <a href="{{ route('agency.users') }}" class="topbar-nav-btn {{ request()->routeIs('agency.users') ? 'active' : '' }}" title="المستخدمين">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M17 20h5v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2h5"/></svg>
                 <span class="topbar-nav-text">المستخدمين</span>
             </a>
+            @endif
+            @if(auth()->user()->hasAnyPermission(['roles.view','roles.create','roles.edit','roles.delete']))
             <a href="{{ route('agency.roles') }}" class="topbar-nav-btn {{ request()->routeIs('agency.roles') ? 'active' : '' }}" title="الأدوار">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h6"/></svg>
                 <span class="topbar-nav-text">الأدوار</span>
             </a>
+            @endif
+            @if(auth()->user()->hasAnyPermission(['sales.view','sales.create','sales.edit','sales.delete']))
             <a href="{{ route('sales.index') }}" class="topbar-nav-btn {{ request()->routeIs('sales.index') ? 'active' : '' }}" title="المبيعات">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h11M9 21V3M17 16l4-4m0 0l-4-4m4 4H9" /></svg>
                 <span class="topbar-nav-text">المبيعات</span>
             </a>
+            @endif
+            @if(auth()->user()->hasAnyPermission(['services.view','services.create','services.edit','services.delete']))
             <a href="{{ route('agency.services') }}" class="topbar-nav-btn {{ request()->routeIs('agency.services') ? 'active' : '' }}" title="الخدمات">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h6" /></svg>
                 <span class="topbar-nav-text">الخدمات</span>
             </a>
+            @endif
+            @if(auth()->user()->hasAnyPermission(['permissions.view','permissions.manage']))
             <a href="{{ route('agency.permissions') }}" class="topbar-nav-btn {{ request()->routeIs('agency.permissions') ? 'active' : '' }}" title="الصلاحيات">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                 <span class="topbar-nav-text">الصلاحيات</span>
             </a>
+            @endif
             <a href="{{ route('agency.profile') }}" class="topbar-nav-btn {{ request()->routeIs('agency.profile') ? 'active' : '' }}" title="ملف الوكالة">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                 <span class="topbar-nav-text">ملف الوكالة</span>
