@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
      'admin' => \App\Http\Middleware\AdminMiddleware::class,
      'agency' => \App\Http\Middleware\AgencyMiddleware::class,
      'ensureCurrency' => \App\Http\Middleware\EnsureAgencyCurrencyIsSet::class,
+      'mustChangePassword' => \App\Http\Middleware\EnsurePasswordIsChanged::class,
 ]);
 
     })

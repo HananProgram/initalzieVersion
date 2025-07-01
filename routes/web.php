@@ -13,8 +13,10 @@ use App\Livewire\Agency\Profile as AgencyProfile;
 use App\Livewire\Sales\Index;
 use App\Livewire\Sales\Create;
 use App\Livewire\Agency\SetupCurrency;
-use App\Http\Controllers\CurrencySetupController;
 use App\Livewire\Agency\AddCustomer;
+use App\Livewire\Agency\ChangePassword;
+use App\Http\Controllers\CurrencySetupController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -52,11 +54,14 @@ Route::middleware(['auth'])->group(function () {
 // Agency Routes
 Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
 
-    // صفحة إعداد العملة بـ Livewire، في حال ما تم إعداد العملة
+    // إعداد العملة (Livewire)
     Route::get('/setup-currency', SetupCurrency::class)->name('agency.setup-currency');
 
-    // باقي الصفحات محمية بميدلوير التحقق من إعداد العملة
-    Route::middleware(['ensureCurrency'])->group(function () {
+    // ✅ تغيير كلمة المرور (بدون middleware حتى تفتح دائمًا)
+    Route::get('/change-password', ChangePassword::class)->name('agency.change-password');
+
+    // ✅ باقي الصفحات محمية بالعملة وتغيير كلمة المرور
+    Route::middleware(['mustChangePassword','ensureCurrency'])->group(function () {
         Route::get('/dashboard', AgencyDashboard::class)->name('agency.dashboard');
         Route::get('/users', AgencyUsers::class)->name('agency.users');
         Route::get('/roles', AgencyRoles::class)->name('agency.roles');
@@ -65,7 +70,7 @@ Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
         Route::get('/services', \App\Livewire\Agency\Services::class)->name('agency.services');
         Route::get('/sales', Index::class)->name('sales.index');
         Route::get('/sales/create', Create::class)->name('sales.create');
-         Route::get('/agency/customers/add', AddCustomer::class)->name('agency.customers.add');
+        Route::get('/agency/customers/add', AddCustomer::class)->name('agency.customers.add');
     });
 });
 
