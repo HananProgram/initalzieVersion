@@ -10,20 +10,23 @@ use App\Livewire\Agency\Users as AgencyUsers;
 use App\Livewire\Agency\Roles as AgencyRoles;
 use App\Livewire\Agency\Permissions as AgencyPermissions;
 use App\Livewire\Agency\Profile as AgencyProfile;
+use App\Livewire\Agency\AddCustomer;
+use App\Livewire\Agency\SetupCurrency;
+use App\Livewire\Agency\ChangePassword;
 use App\Livewire\Sales\Index;
 use App\Livewire\Sales\Create;
-use App\Livewire\Agency\SetupCurrency;
-use App\Livewire\Agency\AddCustomer;
-use App\Livewire\Agency\ChangePassword;
 use App\Http\Controllers\CurrencySetupController;
+use Spatie\Browsershot\Browsershot;
 
+// الصفحة الرئيسية
 Route::get('/', function () {
     return view('welcome');
 });
 
+// تسجيل الدخول
 Route::get('/login', Login::class)->name('login');
 
-// Dashboard redirect route
+// توجيه بعد تسجيل الدخول حسب الدور
 Route::get('/dashboard', function () {
     $user = auth()->user();
 
@@ -36,7 +39,7 @@ Route::get('/dashboard', function () {
     return redirect('/');
 })->middleware('auth')->name('dashboard');
 
-// Admin Routes
+// ==================== Admin Routes ====================
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', AdminDashboard::class)->name('admin.dashboard');
     Route::get('/agencies', AdminAgencies::class)->name('admin.agencies');
@@ -45,23 +48,23 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/agencies/delete/{id}', \App\Livewire\Admin\DeleteAgency::class)->name('admin.delete-agency');
 });
 
-// Routes لإعداد العملة
+// ==================== إعداد العملة ====================
 Route::middleware(['auth'])->group(function () {
     Route::get('/setup-currency', [CurrencySetupController::class, 'form'])->name('agency.currency.setup');
     Route::post('/setup-currency', [CurrencySetupController::class, 'store'])->name('agency.currency.store');
 });
 
-// Agency Routes
+// ==================== Agency Routes ====================
 Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
 
-    // إعداد العملة (Livewire)
+    // إعداد العملة للمرة الأولى
     Route::get('/setup-currency', SetupCurrency::class)->name('agency.setup-currency');
 
-    // ✅ تغيير كلمة المرور (بدون middleware حتى تفتح دائمًا)
+    // صفحة تغيير كلمة المرور (بدون تحقق من العملة أو كلمة المرور)
     Route::get('/change-password', ChangePassword::class)->name('agency.change-password');
 
-    // ✅ باقي الصفحات محمية بالعملة وتغيير كلمة المرور
-    Route::middleware(['mustChangePassword','ensureCurrency'])->group(function () {
+    // باقي صفحات الوكالة
+    Route::middleware(['mustChangePassword', 'ensureCurrency'])->group(function () {
         Route::get('/dashboard', AgencyDashboard::class)->name('agency.dashboard');
         Route::get('/users', AgencyUsers::class)->name('agency.users');
         Route::get('/roles', AgencyRoles::class)->name('agency.roles');
@@ -70,16 +73,20 @@ Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
         Route::get('/services', \App\Livewire\Agency\Services::class)->name('agency.services');
         Route::get('/sales', Index::class)->name('sales.index');
         Route::get('/sales/create', Create::class)->name('sales.create');
-        Route::get('/agency/customers/add', AddCustomer::class)->name('agency.customers.add');
+        Route::get('/customers/add', AddCustomer::class)->name('agency.customers.add');
+
+        // تقرير المبيعات PDF
+        Route::get('/sales/report/pdf', [\App\Http\Controllers\Agency\ReportController::class, 'salesPdf'])
+            ->name('agency.sales.report.pdf');
     });
 });
 
-// Logout Route
+// ==================== تسجيل الخروج ====================
 Route::post('/logout', function () {
     auth()->logout();
     return redirect('/');
 })->name('logout');
 
-// Password Reset
+// ==================== إعادة تعيين كلمة المرور ====================
 Route::get('/forgot-password', \App\Livewire\ForgotPassword::class)->name('password.request');
 Route::get('/reset-password/{token}', \App\Livewire\ResetPassword::class)->name('password.reset');
