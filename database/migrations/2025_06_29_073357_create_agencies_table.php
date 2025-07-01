@@ -24,10 +24,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
             $table->date('license_expiry_date');
-<<<<<<< HEAD
              $table->string('currency')->nullable();
-=======
->>>>>>> origin/anas
             $table->timestamps();
         });
     }

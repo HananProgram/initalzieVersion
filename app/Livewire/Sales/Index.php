@@ -21,6 +21,13 @@ class Index extends Component
            $action, $amount_received, $depositor_name, $account_id, $customer_id, $sale_profit;
 
     public $editingSale = null;
+    public $currency;
+
+    public function mount()
+{
+    $this->currency = auth()->user()->agency->currency ?? 'USD';
+}
+
 
     protected function rules()
     {

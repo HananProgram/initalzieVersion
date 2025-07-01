@@ -22,18 +22,15 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
           InitialSystemSeeder::class,
-            RolesSeeder::class,
-            SuperAdminSeeder::class,
-            AgencyRolesSeeder::class,
-             InitialAgencySeeder::class,
-            CustomerSeeder::class,
-              ServiceTypeSeeder::class,
-        ProviderSeeder::class,
-        IntermediarySeeder::class,
-<<<<<<< HEAD
-        AccountSeeder::class
-=======
->>>>>>> origin/anas
+          RolesSeeder::class,
+          SuperAdminSeeder::class,
+          AgencyRolesSeeder::class,
+          InitialAgencySeeder::class,
+          CustomerSeeder::class,
+          ServiceTypeSeeder::class,
+          ProviderSeeder::class,
+          IntermediarySeeder::class,
+          AccountSeeder::class,
 
         ]);
     }

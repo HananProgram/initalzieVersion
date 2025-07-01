@@ -91,7 +91,7 @@
             <!-- الصف الثالث -->
             <div class="grid md:grid-cols-4 gap-3">
                 <div>
-                    <label class="{{ $labelClass }}">USD Buy</label>
+                  <label class="{{ $labelClass }}">USD Buy ({{ $currency }})</label>
                     <input type="number" wire:model="usd_buy" step="0.01" class="{{ $fieldClass }}" />
                     @error('usd_buy') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
                 </div>
@@ -197,7 +197,8 @@
                             <td class="px-2 py-1">{{ $sale->serviceType->name ?? '-' }}</td>
                             <td class="px-2 py-1">{{ $sale->provider->name ?? '-' }}</td>
                             <td class="px-2 py-1">{{ $sale->intermediary->name ?? '-' }}</td>
-                            <td class="px-2 py-1 text-green-700 font-semibold">{{ number_format($sale->usd_buy, 2) }}</td>
+                           <td class="px-2 py-1 text-green-700 font-semibold"> {{ number_format($sale->usd_buy, 2) }} {{ $currency }}
+</td>
                             <td class="px-2 py-1 text-red-700 font-semibold">{{ number_format($sale->usd_sell, 2) }}</td>
                             <td class="px-2 py-1 text-blue-700 font-semibold">{{ number_format($sale->sale_profit, 2) }}</td>
                             <td class="px-2 py-1">{{ number_format($sale->amount_received, 2) }}</td>
