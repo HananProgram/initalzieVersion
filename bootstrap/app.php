@@ -11,16 +11,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->alias([
-            'admin' => \App\Http\Middleware\AdminMiddleware::class,
-            'agency' => \App\Http\Middleware\AgencyMiddleware::class,
-<<<<<<< HEAD
-           'ensureCurrency' => \App\Http\Middleware\EnsureAgencyCurrencyIsSet::class,
+      $middleware->alias([
+     'admin' => \App\Http\Middleware\AdminMiddleware::class,
+     'agency' => \App\Http\Middleware\AgencyMiddleware::class,
+     'ensureCurrency' => \App\Http\Middleware\EnsureAgencyCurrencyIsSet::class,
+]);
 
-=======
->>>>>>> origin/anas
-        ]);
     })
+        
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

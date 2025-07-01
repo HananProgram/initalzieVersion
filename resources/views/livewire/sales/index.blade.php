@@ -88,45 +88,23 @@
                 </div>
             </div>
 
-<<<<<<< HEAD
-            <!-- الصف الثالث - تم التعديل هنا -->
-            <div class="grid md:grid-cols-4 gap-3">
-                <div>
-                    <label class="{{ $labelClass }}">USD Buy</label>
-                    <input type="number" wire:model.live="usd_buy" step="0.01" 
-                           wire:change="calculateProfit" class="{{ $fieldClass }}" />
-=======
             <!-- الصف الثالث -->
             <div class="grid md:grid-cols-4 gap-3">
                 <div>
                     <label class="{{ $labelClass }}">USD Buy</label>
                     <input type="number" wire:model="usd_buy" step="0.01" class="{{ $fieldClass }}" />
->>>>>>> origin/anas
                     @error('usd_buy') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
                     <label class="{{ $labelClass }}">USD Sell</label>
-<<<<<<< HEAD
-                    <input type="number" wire:model.live="usd_sell" step="0.01" 
-                           wire:change="calculateProfit" class="{{ $fieldClass }}" />
-=======
                     <input type="number" wire:model="usd_sell" step="0.01" class="{{ $fieldClass }}" />
->>>>>>> origin/anas
                     @error('usd_sell') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
                     <label class="{{ $labelClass }}">الربح</label>
-<<<<<<< HEAD
-                    <div class="relative">
-                        <input type="number" wire:model="sale_profit" step="0.01" 
-                               class="{{ $fieldClass }} bg-gray-100 pr-8" readonly />
-                        <span class="absolute right-3 top-2 text-xs text-gray-500">USD</span>
-                    </div>
-=======
                     <input type="number" wire:model="sale_profit" step="0.01" class="{{ $fieldClass }}" />
->>>>>>> origin/anas
                     @error('sale_profit') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
                 </div>
 
