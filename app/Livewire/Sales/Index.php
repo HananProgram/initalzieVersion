@@ -2,54 +2,92 @@
 
 namespace App\Livewire\Sales;
 
-use App\Models\Provider;
-use App\Models\Sale;
-use App\Models\ServiceType;
-use App\Models\Intermediary;
-use App\Models\Customer;
-use App\Models\Account;
+use App\Models\{Provider, Sale, ServiceType, Intermediary, Customer, Account};
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\{Component, WithPagination};
+use Livewire\Attributes\{Layout, Rule};
 
 class Index extends Component
 {
     use WithPagination;
 
-    public $beneficiary_name, $sale_date, $service_type_id, $provider_id,
-           $intermediary_id, $usd_buy, $usd_sell, $note, $route, $pnr, $reference,
-           $action, $amount_received, $depositor_name, $account_id, $customer_id, $sale_profit;
+    protected string $paginationTheme = 'bootstrap'; // أو 'tailwind' حسب التصميم المستخدم
 
-    public $editingSale = null;
+    // حقول النموذج
+    public ?string $beneficiary_name = null;
+    #[Rule('required|date')]
+    public string $sale_date;
+    #[Rule('required|exists:service_types,id')]
+    public int $service_type_id;
+    #[Rule('nullable|exists:providers,id')]
+    public ?int $provider_id = null;
+    #[Rule('nullable|exists:intermediaries,id')]
+    public ?int $intermediary_id = null;
+    #[Rule('nullable|numeric')]
+    public ?float $usd_buy = null;
+    #[Rule('nullable|numeric')]
+    public ?float $usd_sell = null;
+    #[Rule('nullable|string')]
+    public ?string $note = null;
+    #[Rule('nullable|string')]
+    public ?string $route = null;
+    #[Rule('nullable|string')]
+    public ?string $pnr = null;
+    #[Rule('nullable|string')]
+    public ?string $reference = null;
+    #[Rule('nullable|string')]
+    public ?string $action = null;
+    #[Rule('nullable|numeric')]
+    public ?float $amount_received = null;
+    #[Rule('nullable|string')]
+    public ?string $depositor_name = null;
+    #[Rule('nullable|exists:accounts,id')]
+    public ?int $account_id = null;
+    #[Rule('nullable|exists:customers,id')]
+    public ?int $customer_id = null;
+    #[Rule('nullable|numeric')]
+    public ?float $sale_profit = null;
 
-    protected function rules()
-    {
-        return [
-            'beneficiary_name' => 'nullable|string|max:255',
-            'sale_date' => 'required|date',
-            'service_type_id' => 'required|exists:service_types,id',
-            'provider_id' => 'nullable|exists:providers,id',
-            'intermediary_id' => 'nullable|exists:intermediaries,id',
-            'usd_buy' => 'nullable|numeric',
-            'usd_sell' => 'nullable|numeric',
-            'note' => 'nullable|string',
-            'route' => 'nullable|string',
-            'pnr' => 'nullable|string',
-            'reference' => 'nullable|string',
-            'action' => 'nullable|string',
-            'amount_received' => 'nullable|numeric',
-            'depositor_name' => 'nullable|string',
-            'account_id' => 'nullable|exists:accounts,id',
-            'customer_id' => 'nullable|exists:customers,id',
-            'sale_profit' => 'nullable|numeric',
-        ];
-    }
+    public ?Sale $editingSale = null;
 
-    public function save()
+    // حفظ البيانات
+    public function save(): void
     {
         $this->validate();
 
-        Sale::create([
+        Sale::create($this->getSaleData());
+
+        $this->resetForm();
+        $this->dispatch('notify', message: 'تمت إضافة العملية بنجاح');
+    }
+
+    // نسخ عملية بيع
+    public function duplicate(Sale $sale): void
+    {
+        $this->fill($sale->only([
+            'beneficiary_name', 'sale_date', 'service_type_id', 'provider_id',
+            'intermediary_id', 'usd_buy', 'usd_sell', 'note', 'route', 'pnr',
+            'reference', 'action', 'amount_received', 'depositor_name',
+            'account_id', 'customer_id', 'sale_profit'
+        ]));
+    }
+
+    // إعادة تعيين النموذج
+    public function resetForm(): void
+    {
+        $this->reset([
+            'beneficiary_name', 'sale_date', 'service_type_id', 'provider_id',
+            'intermediary_id', 'usd_buy', 'usd_sell', 'note', 'route', 'pnr',
+            'reference', 'action', 'amount_received', 'depositor_name',
+            'account_id', 'customer_id', 'sale_profit', 'editingSale'
+        ]);
+    }
+
+    // الحصول على بيانات البيع
+    protected function getSaleData(): array
+    {
+        return [
             'beneficiary_name' => $this->beneficiary_name,
             'sale_date' => $this->sale_date,
             'service_type_id' => $this->service_type_id,
@@ -69,60 +107,28 @@ class Index extends Component
             'sale_profit' => $this->sale_profit,
             'user_id' => Auth::id(),
             'agency_id' => Auth::user()->agency_id,
+        ];
+    }
+
+    #[Layout('layouts.agency')]
+    public function render(): View
+    {
+        return view('livewire.sales.index', [
+            'sales' => Sale::with([
+                'user:id,name',
+                'provider:id,name',
+                'serviceType:id,name',
+                'customer:id,name',
+                'account:id,name'
+            ])
+            ->latest()
+            ->paginate(10),
+
+            'serviceTypes' => ServiceType::select('id', 'name')->get(),
+            'providers' => Provider::select('id', 'name')->get(),
+            'intermediaries' => Intermediary::select('id', 'name')->get(),
+            'customers' => Customer::select('id', 'name')->get(),
+            'accounts' => Account::select('id', 'name')->get(),
         ]);
-
-        $this->resetForm();
-        session()->flash('message', 'تمت إضافة العملية بنجاح');
-    }
-
-    public function duplicate($id)
-    {
-        $sale = Sale::findOrFail($id);
-
-        $this->beneficiary_name = $sale->beneficiary_name;
-        $this->sale_date = $sale->sale_date;
-        $this->service_type_id = $sale->service_type_id;
-        $this->provider_id = $sale->provider_id;
-        $this->intermediary_id = $sale->intermediary_id;
-        $this->usd_buy = $sale->usd_buy;
-        $this->usd_sell = $sale->usd_sell;
-        $this->note = $sale->note;
-        $this->route = $sale->route;
-        $this->pnr = $sale->pnr;
-        $this->reference = $sale->reference;
-        $this->action = $sale->action;
-        $this->amount_received = $sale->amount_received;
-        $this->depositor_name = $sale->depositor_name;
-        $this->account_id = $sale->account_id;
-        $this->customer_id = $sale->customer_id;
-        $this->sale_profit = $sale->sale_profit;
-    }
-
-    public function resetForm()
-    {
-        $this->reset([
-            'beneficiary_name', 'sale_date', 'service_type_id', 'provider_id',
-            'intermediary_id', 'usd_buy', 'usd_sell', 'note', 'route', 'pnr',
-            'reference', 'action', 'amount_received', 'depositor_name',
-            'account_id', 'customer_id', 'sale_profit'
-        ]);
-    }
-
-    public function resetFields()
-    {
-        $this->resetForm();
-    }
-
-    public function render()
-    {
-        $sales = Sale::with(['user', 'provider', 'serviceType', 'customer', 'account'])->latest()->paginate(10);
-        $serviceTypes = ServiceType::all();
-        $providers = Provider::all();
-        $intermediaries = Intermediary::all();
-        $customers = Customer::all();
-        $accounts = Account::all();
-
-        return view('livewire.sales.index', compact('sales', 'serviceTypes', 'providers', 'intermediaries', 'customers', 'accounts'))
-            ->layout('layouts.agency');
     }
 }
