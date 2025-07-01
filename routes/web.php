@@ -14,7 +14,7 @@ use App\Livewire\Sales\Index;
 use App\Livewire\Sales\Create;
 use App\Livewire\Agency\SetupCurrency;
 use App\Http\Controllers\CurrencySetupController;
-
+use App\Livewire\Agency\AddCustomer;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -65,6 +65,7 @@ Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
         Route::get('/services', \App\Livewire\Agency\Services::class)->name('agency.services');
         Route::get('/sales', Index::class)->name('sales.index');
         Route::get('/sales/create', Create::class)->name('sales.create');
+         Route::get('/agency/customers/add', AddCustomer::class)->name('agency.customers.add');
     });
 });
 

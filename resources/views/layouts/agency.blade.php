@@ -54,6 +54,13 @@
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                 <span class="topbar-nav-text">الصلاحيات</span>
             </a>
+            <a href="{{ route('agency.customers.add') }}" class="topbar-nav-btn {{ request()->routeIs('agency.customers.add') ? 'active' : '' }}" title="إضافة عميل">
+    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+    </svg>
+    <span class="topbar-nav-text">إضافة عميل</span>
+</a>
+
             <a href="{{ route('agency.profile') }}" class="topbar-nav-btn {{ request()->routeIs('agency.profile') ? 'active' : '' }}" title="ملف الوكالة">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                 <span class="topbar-nav-text">ملف الوكالة</span>
