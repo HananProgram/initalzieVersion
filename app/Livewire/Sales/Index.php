@@ -18,7 +18,7 @@ class Index extends Component
 
     public $beneficiary_name, $sale_date, $service_type_id, $provider_id,
            $intermediary_id, $usd_buy, $usd_sell, $note, $route, $pnr, $reference,
-           $action, $amount_received, $depositor_name, $account_id, $customer_id, $sale_profit;
+           $action, $amount_received, $depositor_name, $account_id, $customer_id, $sale_profit=0;
     
     public $editingSale = null;
     public $currency;
@@ -131,5 +131,26 @@ class Index extends Component
 
         return view('livewire.sales.index', compact('sales', 'serviceTypes', 'providers', 'intermediaries', 'customers', 'accounts'))
             ->layout('layouts.agency');
+    }
+
+  
+
+    public function updatedUsdBuy()
+    {
+        $this->calculateProfit();
+    }
+
+    public function updatedUsdSell()
+    {
+        $this->calculateProfit();
+    }
+
+    public function calculateProfit()
+    {
+        if (is_numeric($this->usd_buy) && is_numeric($this->usd_sell)) {
+            $this->sale_profit = $this->usd_sell - $this->usd_buy;
+        } else {
+            $this->sale_profit = 0;
+        }
     }
 }

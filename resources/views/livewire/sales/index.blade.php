@@ -90,23 +90,24 @@
 
             <!-- الصف الثالث -->
             <div class="grid md:grid-cols-4 gap-3">
-                <div>
-                  <label class="{{ $labelClass }}">USD Buy ({{ $currency }})</label>
-                    <input type="number" wire:model="usd_buy" step="0.01" class="{{ $fieldClass }}" />
-                    @error('usd_buy') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
-                </div>
+             <div>
+    <label class="{{ $labelClass }}">USD Buy ({{ $currency }})</label>
+    <input type="number" wire:model="usd_buy" step="0.01" class="{{ $fieldClass }}" wire:change="calculateProfit" />
+    @error('usd_buy') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+</div>
 
-                <div>
-                    <label class="{{ $labelClass }}">USD Sell</label>
-                    <input type="number" wire:model="usd_sell" step="0.01" class="{{ $fieldClass }}" />
-                    @error('usd_sell') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
-                </div>
+<div>
+    <label class="{{ $labelClass }}">USD Sell</label>
+    <input type="number" wire:model="usd_sell" step="0.01" class="{{ $fieldClass }}" wire:change="calculateProfit" />
+    @error('usd_sell') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+</div>
 
-                <div>
-                    <label class="{{ $labelClass }}">الربح</label>
-                    <input type="number" wire:model="sale_profit" step="0.01" class="{{ $fieldClass }}" />
-                    @error('sale_profit') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
-                </div>
+<div>
+    <label class="{{ $labelClass }}">الربح</label>
+    <input type="number" wire:model="sale_profit" step="0.01" class="{{ $fieldClass }}" readonly />
+    @error('sale_profit') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+</div>
+
 
                 <div>
                     <label class="{{ $labelClass }}">المبلغ المدفوع</label>

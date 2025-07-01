@@ -1,4 +1,4 @@
-<div class="max-w-4xl mx-auto mt-12 bg-white/80 backdrop-blur-md p-8 rounded-3xl shadow-2xl border border-emerald-200">
+<!-- <div class="max-w-4xl mx-auto mt-12 bg-white/80 backdrop-blur-md p-8 rounded-3xl shadow-2xl border border-emerald-200">
     <h2 class="text-3xl font-extrabold text-emerald-700 mb-10 text-center">إضافة عملية بيع</h2>
 
     <form wire:submit.prevent="save" class="space-y-6 text-lg">
@@ -84,4 +84,4 @@
             </button>
         </div>
     </form>
-</div>
+</div> -->

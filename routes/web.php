@@ -16,7 +16,6 @@ use App\Livewire\Agency\ChangePassword;
 use App\Livewire\Sales\Index;
 use App\Livewire\Sales\Create;
 use App\Http\Controllers\CurrencySetupController;
-use Spatie\Browsershot\Browsershot;
 use App\Livewire\HR\EmployeeIndex;
 
 // الصفحة الرئيسية
@@ -58,14 +57,14 @@ Route::middleware(['auth'])->group(function () {
 // ==================== Agency Routes ====================
 Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
 
-    // إعداد العملة للمرة الأولى
+    // إعداد العملة للمرة الأولى (يجب أن يكون بدون middleware "money")
     Route::get('/setup-currency', SetupCurrency::class)->name('agency.setup-currency');
 
     // صفحة تغيير كلمة المرور (بدون تحقق من العملة أو كلمة المرور)
     Route::get('/change-password', ChangePassword::class)->name('agency.change-password');
-// 'ensureCurrency'
-    // باقي صفحات الوكالة
-    Route::middleware(['mustChangePassword'])->group(function () {
+
+    // باقي صفحات الوكالة (مع middleware التحقق من كلمة المرور ووجود العملة)
+    Route::middleware(['mustChangePassword', 'ensureCurrency'])->group(function () {
         Route::get('/dashboard', AgencyDashboard::class)->name('agency.dashboard');
         Route::get('/users', AgencyUsers::class)->name('agency.users');
         Route::get('/roles', AgencyRoles::class)->name('agency.roles');
@@ -92,15 +91,9 @@ Route::post('/logout', function () {
 Route::get('/forgot-password', \App\Livewire\ForgotPassword::class)->name('password.request');
 Route::get('/reset-password/{token}', \App\Livewire\ResetPassword::class)->name('password.reset');
 
-// hr Routes
+// ==================== HR Routes ====================
 Route::middleware(['auth'])->group(function () {
-   Route::get('/hr/employees/create', \App\Livewire\HR\EmployeeCreate::class)
-    ->name('hr.employees.create');
-
-
-    Route::get('/hr/employees', EmployeeIndex::class)
-        ->name('hr.employees.index');
-
-         Route::get('/hr/employees/{id}/edit', \App\Livewire\HR\EmployeeEdit::class)
-        ->name('hr.employees.edit');
+    Route::get('/hr/employees/create', \App\Livewire\HR\EmployeeCreate::class)->name('hr.employees.create');
+    Route::get('/hr/employees', EmployeeIndex::class)->name('hr.employees.index');
+    Route::get('/hr/employees/{id}/edit', \App\Livewire\HR\EmployeeEdit::class)->name('hr.employees.edit');
 });
