@@ -54,6 +54,20 @@
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                 <span class="topbar-nav-text">الصلاحيات</span>
             </a>
+
+            <a href="{{ route('hr.employees.index') }}" class="flex flex-col items-center group">
+    @if(request()->routeIs('hr.employees.index'))
+        <span class="text-white font-bold">الموارد البشرية</span>
+        <div class="h-1 w-6 bg-white rounded-full mt-1"></div>
+    @else
+        <div class="p-2 rounded-full border-2 border-white/20 group-hover:border-white/40 transition-all duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5.121 17.804A11.938 11.938 0 0112 15c2.21 0 4.265.64 6.001 1.737M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+        </div>
+    @endif
+</a>
             <a href="{{ route('agency.customers.add') }}" class="topbar-nav-btn {{ request()->routeIs('agency.customers.add') ? 'active' : '' }}" title="إضافة عميل">
     <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />

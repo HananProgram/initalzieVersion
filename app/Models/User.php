@@ -26,6 +26,8 @@ class User extends Authenticatable
         'user_type',
         'is_active',
         'last_login_at',
+        'department_id',
+        'position_id',
     ];
 
     /**
@@ -50,6 +52,12 @@ class User extends Authenticatable
         'is_active' => 'boolean',
     ];
 
+    public const USER_TYPES = [
+        'super_admin' => 'super_admin',
+        'agency_admin' => 'agency_admin',
+        'agency_user' => 'agency_user'
+    ];
+
     public function agency()
     {
         return $this->belongsTo(Agency::class);
@@ -60,19 +68,19 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function isSuperAdmin()
+    public function isSuperAdmin(): bool
     {
-        return $this->user_type === 'super_admin';
+        return $this->user_type === self::USER_TYPES['super_admin'];
     }
 
-    public function isAgencyAdmin()
+    public function isAgencyAdmin(): bool
     {
-        return $this->user_type === 'agency_admin';
+        return $this->user_type === self::USER_TYPES['agency_admin'];
     }
 
-    public function isAgencyUser()
+    public function isAgencyUser(): bool
     {
-        return $this->user_type === 'agency_user';
+        return $this->user_type === self::USER_TYPES['agency_user'];
     }
 
     public function hasPermission($permission)
@@ -104,5 +112,15 @@ class User extends Authenticatable
         }
 
         return false;
+    }
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 }
