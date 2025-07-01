@@ -19,7 +19,7 @@ class Index extends Component
     public $beneficiary_name, $sale_date, $service_type_id, $provider_id,
            $intermediary_id, $usd_buy, $usd_sell, $note, $route, $pnr, $reference,
            $action, $amount_received, $depositor_name, $account_id, $customer_id, $sale_profit;
-
+    
     public $editingSale = null;
 
     protected function rules()

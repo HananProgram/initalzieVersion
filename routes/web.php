@@ -12,7 +12,7 @@ use App\Livewire\Agency\Permissions as AgencyPermissions;
 use App\Livewire\Agency\Profile as AgencyProfile;
 use App\Livewire\Sales\Index;
 use App\Livewire\Sales\Create;
-
+use Spatie\Browsershot\Browsershot;
 
 
 Route::get('/', function () {
@@ -44,16 +44,22 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
   
 });
 
-// Agency Routes
-Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
-    Route::get('/dashboard', AgencyDashboard::class)->name('agency.dashboard');
-    Route::get('/users', AgencyUsers::class)->name('agency.users');
-    Route::get('/roles', AgencyRoles::class)->name('agency.roles');
-    Route::get('/permissions', AgencyPermissions::class)->name('agency.permissions');
-    Route::get('/profile', AgencyProfile::class)->name('agency.profile');
-    Route::get('/services', \App\Livewire\Agency\Services::class)->name('agency.services');
-    Route::get('/sales', Index::class)->name('sales.index');
-    Route::get('/sales/create', Create::class)->name('sales.create');
+    // Agency Routes
+    Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
+        Route::get('/dashboard', AgencyDashboard::class)->name('agency.dashboard');
+        Route::get('/users', AgencyUsers::class)->name('agency.users');
+        Route::get('/roles', AgencyRoles::class)->name('agency.roles');
+        Route::get('/permissions', AgencyPermissions::class)->name('agency.permissions');
+        Route::get('/profile', AgencyProfile::class)->name('agency.profile');
+        Route::get('/services', \App\Livewire\Agency\Services::class)->name('agency.services');
+        Route::get('/sales', Index::class)->name('sales.index');
+        Route::get('/sales/create', Create::class)->name('sales.create');
+
+        // report
+        Route::get('/agency/sales/report/pdf', [\App\Http\Controllers\Agency\ReportController::class, 'salesPdf'])
+        ->name('agency.sales.report.pdf');
+
+
 });
 
 // Logout Route

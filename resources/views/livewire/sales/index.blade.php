@@ -3,7 +3,7 @@
     <div class="bg-white rounded-xl shadow-md p-4">
         <h2 class="text-xl font-bold text-emerald-700 mb-4 text-center">إضافة عملية بيع</h2>
 
-        <form wire:submit.prevent="save" class="space-y-4 text-sm">
+        <form wire:submit.prevent="save" class="space-y-4 text-sm" id="mainForm">
             @php
                 $fieldClass = 'w-full rounded-lg border border-gray-300 px-3 py-1 focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white text-xs';
                 $labelClass = 'block mb-1 text-gray-700 font-semibold text-xs';
@@ -155,12 +155,80 @@
                     حفظ العملية
                 </button>
 
+                <button type="button" onclick="openFieldsModal()"
+                    class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold px-4 py-2 rounded-lg shadow-md text-sm">
+                    تقرير مخصص
+                </button>
+
+                <a href="{{ route('agency.sales.report.pdf') }}?start_date={{ request('start_date') }}&end_date={{ request('end_date') }}"
+                    target="_blank"
+                    class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold px-4 py-2 rounded-lg shadow-md text-sm">
+                    تقرير كامل
+                </a>
+
                 <button type="button" wire:click="resetFields"
                     class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold px-6 py-2 rounded-xl shadow transition duration-300 text-sm">
                     تنظيف الحقول
                 </button>
             </div>
         </form>
+    </div>
+
+    <!-- نافذة اختيار الحقول -->
+    <div id="fieldsModal" class="fixed inset-0 bg-black/10 flex items-center justify-center hidden z-50 backdrop-blur-sm transition-all duration-300">
+        <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-md transform transition-all duration-300 scale-95 opacity-0"
+            id="modalContent">
+            <h3 class="text-xl font-bold text-emerald-700 mb-4 text-center">اختر حقول التقرير</h3>
+            
+            <form id="customReportForm" action="{{ route('agency.sales.report.pdf') }}" method="GET" target="_blank" onsubmit="prepareCustomReport()">
+                <input type="hidden" name="start_date" value="{{ request('start_date') }}">
+                <input type="hidden" name="end_date" value="{{ request('end_date') }}">
+                
+                <div class="grid grid-cols-2 gap-4 max-h-96 overflow-y-auto p-2">
+                    @foreach([
+                        'sale_date' => 'التاريخ',
+                        'beneficiary_name' => 'المستفيد',
+                        'customer' => 'العميل',
+                        'serviceType' => 'الخدمة',
+                        'provider' => 'المزود',
+                        'intermediary' => 'الوسيط',
+                        'usd_buy' => 'USD Buy',
+                        'usd_sell' => 'USD Sell',
+                        'sale_profit' => 'الربح',
+                        'amount_received' => 'المبلغ',
+                        'account' => 'الحساب',
+                        'reference' => 'المرجع',
+                        'pnr' => 'PNR',
+                        'route' => 'Route'
+                    ] as $field => $label)
+                    <div class="flex items-center">
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="checkbox"
+       name="fields[]"
+       value="{{ $field }}"
+       checked
+       class="h-4 w-4 rounded border-gray-300 focus:ring-emerald-500 text-emerald-600 accent-emerald-600" />
+
+                            <span class="text-gray-700 text-sm">{{ $label }}</span>
+                        </label>
+                    </div>
+                    @endforeach
+                </div>
+                
+                <div class="mt-6 flex justify-center gap-3">
+                    <button type="button" onclick="closeFieldsModal()"
+                        class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold px-6 py-2 rounded-xl shadow transition 
+                            duration-300 text-sm">
+                        إلغاء
+                    </button>
+                    <button type="submit"
+                        class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 
+                            text-white font-bold px-6 py-2 rounded-xl shadow-md hover:shadow-xl transition duration-300 text-sm">
+                        تحميل التقرير
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- جدول العرض -->
@@ -229,3 +297,40 @@
         @endif
     </div>
 </div>
+
+<script>
+function openFieldsModal() {
+    const modal = document.getElementById('fieldsModal');
+    const content = document.getElementById('modalContent');
+    
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+        modal.classList.remove('bg-opacity-0');
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+    }, 10);
+}
+
+function closeFieldsModal() {
+    const modal = document.getElementById('fieldsModal');
+    const content = document.getElementById('modalContent');
+    
+    content.classList.remove('scale-100', 'opacity-100');
+    content.classList.add('scale-95', 'opacity-0');
+    
+    setTimeout(() => {
+        modal.classList.add('hidden');
+    }, 300);
+}
+
+function prepareCustomReport() {
+    event.preventDefault();
+    document.getElementById('mainForm').style.display = 'none';
+    
+    setTimeout(() => {
+        document.getElementById('customReportForm').submit();
+        document.getElementById('mainForm').style.display = 'block';
+        closeFieldsModal();
+    }, 100);
+}
+</script>
