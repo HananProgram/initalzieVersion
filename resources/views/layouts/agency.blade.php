@@ -50,8 +50,10 @@
 </head>
 <body class="bg-dashboard min-h-screen font-app">
     <!-- Navigation/Header -->
-    <nav class="w-full flex items-center justify-between px-6 shadow-sm rounded-t-2xl"
-         style="background: linear-gradient(90deg, #05997a 0%, #068a8a 100%); padding-top: 8px; padding-bottom: 8px; min-height:48px;">
+<!-- Navigation/Header -->
+<nav class="w-full flex items-center justify-between px-6 shadow-sm rounded-t-2xl"
+     style="background: linear-gradient(90deg, #10B981 0%, #14B8A6 100%); padding-top: 8px; padding-bottom: 8px; min-height:48px;">
+
         <!-- Logo & Agency Name -->
         <div class="flex items-center gap-3">
             <svg class="h-9 w-9" viewBox="0 0 32 32" fill="none">
