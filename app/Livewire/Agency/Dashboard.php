@@ -5,7 +5,7 @@ namespace App\Livewire\Agency;
 use Livewire\Component;
 use App\Models\User;
 use App\Models\Role;
-use App\Models\Service;
+ use App\Models\ServiceType;
 
 class Dashboard extends Component
 {
@@ -50,18 +50,23 @@ class Dashboard extends Component
             ];
         }
         
-        // إحصائيات الخدمات (للمديرين أو من لديهم صلاحية services.view)
-        if ($user->isAgencyAdmin() || $user->hasPermission('services.view')) {
-            $permissionStats['services'] = [
-                'total' => Service::where('agency_id', $agency->id)->count(),
-                'active' => Service::where('agency_id', $agency->id)->where('status', 'active')->count(),
-                'inactive' => Service::where('agency_id', $agency->id)->where('status', 'inactive')->count(),
-                'recent' => Service::where('agency_id', $agency->id)
-                    ->latest()
-                    ->take(5)
-                    ->get()
-            ];
-        }
+     
+
+// ...
+
+// إحصائيات أنواع الخدمات (بدل services)
+if ($user->isAgencyAdmin() || $user->hasPermission('services.view')) {
+    $permissionStats['service_types'] = [
+        'total' => ServiceType::where('agency_id', $agency->id)->count(),
+        'active' => ServiceType::where('agency_id', $agency->id)->count(), // لا يوجد حقل حالة حالياً
+        'inactive' => 0, // يمكنك تركها 0 أو إزالتها إن لم تكن مستخدمة
+        'recent' => ServiceType::where('agency_id', $agency->id)
+            ->latest()
+            ->take(5)
+            ->get()
+    ];
+}
+
         
         // إحصائيات عامة للوكالة (للمديرين فقط)
         if ($user->isAgencyAdmin()) {

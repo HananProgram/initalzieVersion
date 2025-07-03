@@ -74,6 +74,7 @@ Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
         Route::get('/sales', Index::class)->name('sales.index');
         Route::get('/sales/create', Create::class)->name('sales.create');
         Route::get('/customers/add', AddCustomer::class)->name('agency.customers.add');
+        Route::get('/providers', \App\Livewire\Agency\Providers::class)->name('agency.providers');
 
         // تقرير المبيعات PDF
         Route::get('/sales/report/pdf', [\App\Http\Controllers\Agency\ReportController::class, 'salesPdf'])

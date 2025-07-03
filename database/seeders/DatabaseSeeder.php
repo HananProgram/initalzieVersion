@@ -31,7 +31,8 @@ class DatabaseSeeder extends Seeder
           ProviderSeeder::class,
           IntermediarySeeder::class,
           AccountSeeder::class,
-
+          PositionSeeder::class,
+          DepartmentSeeder::class,
         ]);
     }
 }

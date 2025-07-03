@@ -80,23 +80,25 @@
         </div>
         @endif
 
-        <!-- Services Statistics -->
-        @if(isset($permissionStats['services']))
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <div class="flex items-center">
-                <div class="p-3 rounded-full bg-emerald-100 text-emerald-600">
-                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 0a2 2 0 002 2h2a2 2 0 002-2m-6 0V7a2 2 0 012-2h2a2 2 0 012 2v10"></path>
-                    </svg>
-                </div>
-                <div class="mr-4">
-                    <p class="text-sm font-medium text-gray-600">إجمالي الخدمات</p>
-                    <p class="text-2xl font-bold text-gray-900">{{ $permissionStats['services']['total'] }}</p>
-                    <p class="text-xs text-green-600">{{ $permissionStats['services']['active'] }} نشط</p>
-                </div>
+     <!-- Services Statistics -->
+@if(isset($permissionStats['service_types']))
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-emerald-100 text-emerald-600">
+                <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 0a2 2 0 002 2h2a2 2 0 002-2m-6 0V7a2 2 0 012-2h2a2 2 0 012 2v10"/>
+                </svg>
+            </div>
+            <div class="mr-4">
+                <p class="text-sm font-medium text-gray-600">أنواع الخدمات</p>
+                <p class="text-2xl font-bold text-gray-900">{{ $permissionStats['service_types']['total'] }}</p>
+                <p class="text-xs text-green-600">{{ $permissionStats['service_types']['active'] }} نشط</p>
             </div>
         </div>
-        @endif
+    </div>
+@endif
+
 
         <!-- Agency Status (for admins only) -->
         @if($user->isAgencyAdmin() && isset($permissionStats['agency']))

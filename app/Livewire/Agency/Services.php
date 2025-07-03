@@ -3,35 +3,29 @@
 namespace App\Livewire\Agency;
 
 use Livewire\Component;
-use App\Models\Service;
+use App\Models\ServiceType;
 use Illuminate\Support\Facades\Auth;
 
 class Services extends Component
 {
-    public $services;
+    public $serviceTypes;
     public $showModal = false;
     public $editMode = false;
-    public $serviceId;
+    public $serviceTypeId;
     public $name;
-    public $description;
-    public $price;
-    public $image;
 
     protected $rules = [
         'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'price' => 'required|numeric|min:0',
-        'image' => 'nullable|string', // لاحقاً يمكن جعله رفع صورة
     ];
 
     public function mount()
     {
-        $this->fetchServices();
+        $this->fetchServiceTypes();
     }
 
-    public function fetchServices()
+    public function fetchServiceTypes()
     {
-        $this->services = Service::where('agency_id', Auth::user()->agency_id)->get();
+        $this->serviceTypes = ServiceType::where('agency_id', Auth::user()->agency_id)->get();
     }
 
     public function showAddModal()
@@ -43,63 +37,53 @@ class Services extends Component
 
     public function showEditModal($id)
     {
-        $service = Service::findOrFail($id);
-        $this->serviceId = $service->id;
-        $this->name = $service->name;
-        $this->description = $service->description;
-        $this->price = $service->price;
-        $this->image = $service->image;
+        $type = ServiceType::findOrFail($id);
+        $this->serviceTypeId = $type->id;
+        $this->name = $type->name;
         $this->editMode = true;
         $this->showModal = true;
     }
 
-    public function saveService()
+    public function saveServiceType()
     {
         $this->validate();
+
         if ($this->editMode) {
-            $service = Service::findOrFail($this->serviceId);
-            $service->update([
+            $type = ServiceType::findOrFail($this->serviceTypeId);
+            $type->update([
                 'name' => $this->name,
-                'description' => $this->description,
-                'price' => $this->price,
-                'image' => $this->image,
             ]);
-            session()->flash('message', 'تم تحديث الخدمة بنجاح');
+            session()->flash('message', 'تم تحديث نوع الخدمة بنجاح');
         } else {
-            Service::create([
+            ServiceType::create([
                 'agency_id' => Auth::user()->agency_id,
                 'name' => $this->name,
-                'description' => $this->description,
-                'price' => $this->price,
-                'image' => $this->image,
             ]);
-            session()->flash('message', 'تمت إضافة الخدمة بنجاح');
+            session()->flash('message', 'تمت إضافة نوع الخدمة بنجاح');
         }
+
         $this->showModal = false;
-        $this->fetchServices();
+        $this->fetchServiceTypes();
     }
 
-    public function deleteService($id)
+    public function deleteServiceType($id)
     {
-        $service = Service::findOrFail($id);
-        $service->delete();
-        session()->flash('message', 'تم حذف الخدمة بنجاح');
-        $this->fetchServices();
+        $type = ServiceType::findOrFail($id);
+        $type->delete();
+        session()->flash('message', 'تم حذف نوع الخدمة بنجاح');
+        $this->fetchServiceTypes();
     }
 
     public function resetForm()
     {
-        $this->serviceId = null;
+        $this->serviceTypeId = null;
         $this->name = '';
-        $this->description = '';
-        $this->price = '';
-        $this->image = '';
     }
 
     public function render()
     {
         return view('livewire.agency.services')
             ->layout('layouts.agency')
-            ->title('إدارة خدمات الوكالة');
+            ->title('أنواع الخدمات');
     }
 }

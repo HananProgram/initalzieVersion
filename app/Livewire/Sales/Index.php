@@ -23,10 +23,12 @@ class Index extends Component
     public $editingSale = null;
     public $currency;
 
-    public function mount()
+public function mount()
 {
     $this->currency = auth()->user()->agency->currency ?? 'USD';
+    $this->sale_date = now()->format('Y-m-d'); // تاريخ اليوم كافتراض
 }
+
 
 
     protected function rules()

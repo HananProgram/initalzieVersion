@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('service_types', function (Blueprint $table) {
             $table->id();
             $table->string('name'); 
+             $table->foreignId('agency_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
