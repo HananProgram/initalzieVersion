@@ -14,8 +14,8 @@ use Livewire\Component;
 #[Layout('layouts.agency')]
 class EmployeeCreate extends Component
 {
-    public $name, $email, $password, $password_confirmation;
-    public $department_id, $position_id;
+    public $name, $user_name, $email, $password, $password_confirmation;
+    public $department_id, $position_id, $phone, $branch;
     public $departments = [], $positions = [];
 
     public function mount()
@@ -28,10 +28,13 @@ class EmployeeCreate extends Component
     {
         return [
             'name' => 'required|string|min:3',
+            'user_name' => 'required|string|min:3|unique:users,user_name',
             'email' => 'required|email|unique:users,email',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'department_id' => 'required|exists:departments,id',
             'position_id' => 'required|exists:positions,id',
+            'phone' => 'nullable|string|max:20',
+            'branch' => 'nullable|string|max:100',
         ];
     }
 
@@ -41,8 +44,11 @@ class EmployeeCreate extends Component
 
         User::create([
             'name' => $this->name,
+            'user_name' => $this->user_name,
             'email' => $this->email,
             'password' => Hash::make($this->password),
+            'phone' => $this->phone,
+            'branch' => $this->branch,
             'agency_id' => Auth::user()->agency_id,
             'department_id' => $this->department_id,
             'position_id' => $this->position_id,

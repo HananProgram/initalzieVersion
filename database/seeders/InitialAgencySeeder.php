@@ -42,6 +42,7 @@ class InitialAgencySeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'مستخدم مبيعات',
             'email' => 'sales@agency.com',
+            'user_name'=>'hi',
             'password' => Hash::make('password'), // كلمة المرور: password
             'agency_id' => $agencyId,
             'role_id' => $roleId,

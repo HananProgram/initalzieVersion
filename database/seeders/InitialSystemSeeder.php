@@ -15,6 +15,7 @@ class InitialSystemSeeder extends Seeder
         $superAdminId = DB::table('users')->insertGetId([
             'name' => 'System Owner',
             'email' => 'superadmin@example.com',
+            'user_name'=>'hi',
             'password' => Hash::make('password'),
             'user_type' => 'super_admin',
             'is_active' => true,
@@ -55,6 +56,7 @@ class InitialSystemSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'Agency Admin',
             'email' => 'admin@agency.com',
+            'user_name'=>'hi',
             'password' => Hash::make('password'),
             'user_type' => 'agency_admin',
             'agency_id' => $agencyId,
