@@ -17,7 +17,9 @@ use App\Livewire\Sales\Index;
 use App\Livewire\Sales\Create;
 use App\Http\Controllers\CurrencySetupController;
 use App\Livewire\HR\EmployeeIndex;
-
+use App\Exports\SalesExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\Request;
 // الصفحة الرئيسية
 Route::get('/', function () {
     return view('welcome');
@@ -76,9 +78,24 @@ Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
         Route::get('/customers/add', AddCustomer::class)->name('agency.customers.add');
         Route::get('/providers', \App\Livewire\Agency\Providers::class)->name('agency.providers');
 
-        // تقرير المبيعات PDF
-        Route::get('/sales/report/pdf', [\App\Http\Controllers\Agency\ReportController::class, 'salesPdf'])
-            ->name('agency.sales.report.pdf');
+       // تقارير المبيعات
+        Route::prefix('sales/report')->group(function () {
+            // تقرير PDF
+            Route::get('/pdf', [\App\Http\Controllers\Agency\ReportController::class, 'salesPdf'])
+                ->name('agency.sales.report.pdf');
+            
+            // تقرير Excel
+            Route::get('/excel', function (Request $request) {
+                $fields = $request->get('fields');
+                $startDate = $request->get('start_date');
+                $endDate = $request->get('end_date');
+                
+                return Excel::download(
+                    new \App\Exports\SalesExport($fields, $startDate, $endDate), 
+                    'sales-report.xlsx'
+                );
+            })->name('agency.sales.report.excel');
+        });
     });
 });
 
