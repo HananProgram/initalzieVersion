@@ -13,8 +13,11 @@ class InitialAgencySeeder extends Seeder
         // 1. إنشاء وكالة
         $agencyId = DB::table('agencies')->insertGetId([
             'name' => 'وكالة المستقبل',
+            'main_branch_name' => 'الفرع الرئيسي',
             'email' => 'future@agency.com',
             'phone' => '777777777',
+            'landline' => '01-123456', // الهاتف الثابت
+            'currency' => 'USD',       // العملة
             'address' => 'صنعاء - شارع حدة',
             'license_number' => 'LIC-001',
             'commercial_record' => 'CR-001',
@@ -42,7 +45,7 @@ class InitialAgencySeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'مستخدم مبيعات',
             'email' => 'sales@agency.com',
-            'user_name'=>'hi',
+            'user_name' => 'hi',
             'password' => Hash::make('password'), // كلمة المرور: password
             'agency_id' => $agencyId,
             'role_id' => $roleId,

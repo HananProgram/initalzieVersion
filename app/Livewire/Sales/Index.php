@@ -124,7 +124,7 @@ public function mount()
 
     public function render()
     {
-        $sales = Sale::with(['user', 'provider', 'serviceType', 'customer', 'account'])->latest()->paginate(10);
+        $sales = Sale::with(['user', 'provider', 'serviceType', 'customer', 'account'])->latest()->get();
         $serviceTypes = ServiceType::all();
         $providers = Provider::all();
         $intermediaries = Intermediary::all();

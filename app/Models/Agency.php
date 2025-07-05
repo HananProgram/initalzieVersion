@@ -22,6 +22,10 @@ class Agency extends Model
         'status',
         'license_expiry_date',
         'max_users',
+         'main_branch_name',
+        'landline', 
+        'currency',
+           
     ];
 
     protected $casts = [

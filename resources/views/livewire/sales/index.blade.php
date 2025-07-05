@@ -298,13 +298,6 @@
                     </tbody>
                 </table>
             </div>
-
-            <!-- Pagination -->
-            @if($sales->hasPages())
-                <div class="px-4 py-2 border-t border-gray-200">
-                    {{ $sales->links() }}
-                </div>
-            @endif
         </div>
     </div>
 </div>

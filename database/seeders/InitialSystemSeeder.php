@@ -23,23 +23,27 @@ class InitialSystemSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        // 2. إنشاء وكالة
-        $agencyId = DB::table('agencies')->insertGetId([
-            'name' => 'Demo Travel Agency',
-            'email' => 'demo@agency.com',
-            'phone' => '777777777',
-            'address' => 'Yemen - Sana\'a',
-            'license_number' => 'LIC123456',
-            'commercial_record' => 'CR123456',
-            'tax_number' => 'TAX123456',
-            'logo' => null,
-            'description' => 'وكالة اختبارية',
-            'status' => 'active',
-            'license_expiry_date' => now()->addYear(),
-            'max_users' => 10,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+       // 2. إنشاء وكالة
+$agencyId = DB::table('agencies')->insertGetId([
+    'name' => 'Demo Travel Agency',
+    'main_branch_name' => 'Main Branch', // 🟢 أضف هذا السطر
+    'email' => 'demo@agency.com',
+    'phone' => '777777777',
+    'landline' => '01-234567', // 🟢 إن أردت تعبئة الهاتف الثابت
+    'address' => 'Yemen - Sana\'a',
+    'license_number' => 'LIC123456',
+    'commercial_record' => 'CR123456',
+    'tax_number' => 'TAX123456',
+    'logo' => null,
+    'currency' => 'USD', // 🟢 لا تنس تعبئة العملة لأنها أيضًا مطلوبة
+    'description' => 'وكالة اختبارية',
+    'status' => 'active',
+    'license_expiry_date' => now()->addYear(),
+    'max_users' => 10,
+    'created_at' => now(),
+    'updated_at' => now(),
+]);
+
 
         // 3. إنشاء دور مدير وكالة
         $adminRoleId = DB::table('roles')->insertGetId([

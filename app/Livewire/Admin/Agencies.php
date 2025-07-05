@@ -4,9 +4,12 @@ namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use App\Models\Agency;
+use Livewire\WithPagination;
 
 class Agencies extends Component
 {
+    use WithPagination;
+    
     // متغيرات المودال
     public $showEditModal = false;
     public $showDeleteModal = false;
@@ -26,12 +29,28 @@ class Agencies extends Component
     public $max_users;
 
     public $successMessage;
+    public $perPage = 10; // عدد الصفوف لكل صفحة
+    public $showAll = false; // عرض كل البيانات
 
     public function render()
     {
-        $agencies = Agency::with('admin')->get();
+        $query = Agency::with('admin')
+                      ->orderBy('created_at', 'desc');
+
+        if ($this->showAll) {
+            $agencies = $query->get();
+        } else {
+            $agencies = $query->paginate($this->perPage);
+        }
+
         return view('livewire.admin.agencies', compact('agencies'))
             ->layout('layouts.admin');
+    }
+
+    public function toggleShowAll()
+    {
+        $this->showAll = !$this->showAll;
+        $this->resetPage();
     }
 
     public function showEditModal($id)
