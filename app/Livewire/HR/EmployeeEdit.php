@@ -54,6 +54,7 @@ class EmployeeEdit extends Component
         $this->employee->update([
             'name' => $this->name,
             'user_name' => $this->user_name,
+            'is_active' => false,
             'email' => $this->email,
             'phone' => $this->phone,
             'branch' => $this->branch,

@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->string('commercial_record')->unique(); // السجل التجاري
             $table->string('tax_number')->unique(); // الرقم الضريبي
             $table->text('description')->nullable(); // وصف
-             $table->unsignedInteger('max_users')->default(10);
+             $table->unsignedInteger('max_users')->default(3);
             $table->enum('status', ['active', 'inactive', 'suspended'])->default('active'); // الحالة
             $table->date('license_expiry_date'); // تاريخ انتهاء الرخصة
 
