@@ -1,55 +1,200 @@
-<div class="space-y-6">
-    <!-- Header -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">ملف الوكالة</h1>
-        <p class="text-gray-600">معلومات الوكالة الأساسية</p>
-    </div>
-
-    <!-- Agency Info -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">معلومات الوكالة</h2>
-                <div class="space-y-3">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">اسم الوكالة</label>
-                        <p class="text-lg font-semibold text-gray-800">{{ $agency->name }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">البريد الإلكتروني</label>
-                        <p class="text-gray-800">{{ $agency->email }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">رقم الهاتف</label>
-                        <p class="text-gray-800">{{ $agency->phone }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">العنوان</label>
-                        <p class="text-gray-800">{{ $agency->address }}</p>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">معلومات الترخيص</h2>
-                <div class="space-y-3">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">رقم الترخيص</label>
-                        <p class="text-gray-800">{{ $agency->license_number }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">السجل التجاري</label>
-                        <p class="text-gray-800">{{ $agency->commercial_record }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">الرقم الضريبي</label>
-                        <p class="text-gray-800">{{ $agency->tax_number }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">تاريخ انتهاء الرخصة</label>
-                        <p class="text-gray-800">{{ $agency->license_expiry_date }}</p>
-                    </div>
-                </div>
-            </div>
+<div>
+<div class="flex flex-col h-screen overflow-hidden">
+    <!-- القسم السفلي مع المحتوى القابل للتمرير -->
+    <div class="flex-1 overflow-y-auto">
+        <div class="bg-white rounded-xl shadow-md min-h-full flex flex-col p-6">
+            <!-- صورة الشعار -->
+          <div class="flex justify-center mb-6">
+    <div class="relative">
+        <!-- عرض الصورة الحالية أو المؤقتة -->
+        @if($tempLogoUrl)
+            <img src="{{ $tempLogoUrl }}" alt="معاينة الشعار" class="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover">
+        @else
+            <img src="{{ $currentLogo }}" alt="شعار الوكالة" class="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover">
+        @endif
+        
+        <!-- زر رفع الصورة -->
+        <div class="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-md">
+            <label class="cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <input type="file" wire:model="logo" class="hidden" accept="image/*">
+            </label>
         </div>
     </div>
-</div> 
+</div>
+
+            <!-- نموذج البيانات -->
+            <form wire:submit.prevent="update" class="space-y-4 text-sm">
+                @php
+                    $fieldClass = 'w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none bg-white text-xs peer';
+                    $readonlyFieldClass = 'w-full rounded-lg border border-gray-200 px-3 py-2 bg-gray-50 text-sm text-gray-800';
+                    $labelClass = 'absolute right-3 -top-2.5 px-1 bg-white text-xs text-gray-500 transition-all peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-emerald-600';
+                    $containerClass = 'relative mt-1';
+                @endphp
+
+                <!-- الصف الأول -->
+                <div class="grid md:grid-cols-3 gap-3">
+                    <div class="{{ $containerClass }}">
+                        <div class="{{ $readonlyFieldClass }}">{{ $agency->name ?? 'غير محدد' }}</div>
+                        <label class="{{ $labelClass }}">اسم الوكالة</label>
+                    </div>
+
+                    <div class="{{ $containerClass }}">
+                        <div class="{{ $readonlyFieldClass }}">{{ $agency->main_branch_name ?? 'غير محدد' }}</div>
+                        <label class="{{ $labelClass }}">اسم الفرع الرئيسي</label>
+                    </div>
+
+                    <div class="{{ $containerClass }}">
+                        <div class="{{ $readonlyFieldClass }}">{{ $agency->currency ?? 'غير محدد' }}</div>
+                        <label class="{{ $labelClass }}">العملة</label>
+                    </div>
+                </div>
+
+                <!-- الصف الثاني -->
+                <div class="grid md:grid-cols-3 gap-3">
+                    <div class="{{ $containerClass }}">
+                        <div class="{{ $readonlyFieldClass }}">{{ $agency->license_number ?? 'غير محدد' }}</div>
+                        <label class="{{ $labelClass }}">رقم الرخصة</label>
+                    </div>
+
+                    <div class="{{ $containerClass }}">
+                        <div class="{{ $readonlyFieldClass }}">{{ $agency->commercial_record ?? 'غير محدد' }}</div>
+                        <label class="{{ $labelClass }}">السجل التجاري</label>
+                    </div>
+
+                    <div class="{{ $containerClass }}">
+                        <div class="{{ $readonlyFieldClass }}">{{ $agency->tax_number ?? 'غير محدد' }}</div>
+                        <label class="{{ $labelClass }}">الرقم الضريبي</label>
+                    </div>
+                </div>
+
+                <!-- الصف الثالث -->
+                <div class="grid md:grid-cols-3 gap-3">
+                    <div class="{{ $containerClass }}">
+                        <div class="{{ $readonlyFieldClass }}">
+                            @isset($agency->license_expiry_date)
+                                {{ $agency->license_expiry_date->format('Y-m-d') }}
+                            @else
+                                غير محدد
+                            @endisset
+                        </div>
+                        <label class="{{ $labelClass }}">انتهاء الرخصة</label>
+                    </div>
+
+                    <div class="{{ $containerClass }}">
+                        <div class="{{ $readonlyFieldClass }}">{{ $agency->max_users ?? 'غير محدد' }}</div>
+                        <label class="{{ $labelClass }}">عدد المستخدمين</label>
+                    </div>
+
+                    <div class="{{ $containerClass }}">
+                        <div class="{{ $readonlyFieldClass }}">
+                            @if($agency->status == 'active')
+                                <span class="text-emerald-600">نشطة</span>
+                            @elseif($agency->status == 'inactive')
+                                <span class="text-yellow-600">غير نشطة</span>
+                            @elseif($agency->status == 'suspended')
+                                <span class="text-red-600">موقوفة</span>
+                            @else
+                                غير محدد
+                            @endif
+                        </div>
+                        <label class="{{ $labelClass }}">حالة الوكالة</label>
+                    </div>
+                </div>
+
+                <!-- الصف الرابع - حقول قابلة للتعديل -->
+                <div class="grid md:grid-cols-3 gap-3">
+                    <div class="{{ $containerClass }}">
+                        <input type="text" wire:model="phone" class="{{ $fieldClass }}" placeholder="أدخل رقم الهاتف">
+                        <label class="{{ $labelClass }}">رقم الهاتف</label>
+                        @error('phone') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="{{ $containerClass }}">
+                        <input type="text" wire:model="landline" class="{{ $fieldClass }}" placeholder="أدخل الهاتف الثابت">
+                        <label class="{{ $labelClass }}">الهاتف الثابت</label>
+                        @error('landline') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="{{ $containerClass }}">
+                        <input type="email" wire:model="email" class="{{ $fieldClass }}" placeholder="أدخل البريد الإلكتروني">
+                        <label class="{{ $labelClass }}">البريد الإلكتروني</label>
+                        @error('email') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- الصف الخامس - حقول نصية طويلة -->
+                <div class="grid md:grid-cols-1 gap-3">
+                    <div class="{{ $containerClass }}">
+                        <textarea wire:model="address" rows="2" class="{{ $fieldClass }}" placeholder="أدخل العنوان"></textarea>
+                        <label class="{{ $labelClass }}">العنوان</label>
+                        @error('address') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="{{ $containerClass }}">
+                        <textarea wire:model="description" rows="2" class="{{ $fieldClass }}" placeholder="أدخل الوصف"></textarea>
+                        <label class="{{ $labelClass }}">الوصف</label>
+                        @error('description') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <!-- زر التعديل -->
+                <div class="flex justify-end mt-6 pb-4">
+                    <button type="submit"
+                            class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-2 rounded-lg font-medium text-sm transition duration-200 shadow hover:shadow-md">
+                        تعديل البيانات
+                    </button>
+                </div>
+            </form>
+
+            @if (session()->has('success'))
+                <div class="mt-4 p-3 bg-emerald-100 border border-emerald-200 text-emerald-800 rounded-lg text-center text-sm">
+                    {{ session('success') }}
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
+
+<style>
+    html, body {
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    .peer:placeholder-shown + label {
+        top: 0.75rem;
+        font-size: 0.875rem;
+        color: #6b7280;
+    }
+    
+    .peer:not(:placeholder-shown) + label,
+    .peer:focus + label {
+        top: -0.5rem;
+        font-size: 0.75rem;
+        color: #059669;
+    }
+    
+    /* تحسين مظهر شريط التمرير */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+</style>
+</div>

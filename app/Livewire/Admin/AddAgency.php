@@ -3,15 +3,20 @@
 namespace App\Livewire\Admin;
 
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Agency;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class AddAgency extends Component
 {
+    use WithFileUploads;
+
     // بيانات الوكالة
     public $name;
     public $email;
@@ -26,6 +31,8 @@ class AddAgency extends Component
     public $currency;
     public $main_branch_name;
     public $status = 'active';
+    public $logo;
+    
     // بيانات أدمن الوكالة
     public $admin_name;
     public $admin_email;
@@ -48,6 +55,8 @@ class AddAgency extends Component
             'description' => 'nullable|string',
             'currency' => 'required|string|max:10',
             'main_branch_name' => 'required|string|max:255',
+            'logo' => 'nullable|image|max:2048', // 2MB Max
+            'status' => 'required|in:active,inactive,suspended',
 
             'admin_name' => 'required|string|max:255',
             'admin_email' => ['required','email','unique:users,email'],
@@ -59,24 +68,52 @@ class AddAgency extends Component
     {
         $this->validate();
 
+        // تسجيل معلومات الصورة للتحقق
+        Log::info('محاولة حفظ صورة', [
+            'file_exists' => $this->logo ? $this->logo->exists() : false,
+            'original_name' => $this->logo ? $this->logo->getClientOriginalName() : null,
+            'temp_path' => $this->logo ? $this->logo->getRealPath() : null
+        ]);
+
         DB::beginTransaction();
         try {
-                $agency = Agency::create([
-                    'name' => $this->name,
-                    'email' => $this->email,
-                    'phone' => $this->phone,
-                    'landline' => $this->landline,
-                    'address' => $this->address,
-                    'license_number' => $this->license_number,
-                    'commercial_record' => $this->commercial_record,
-                    'tax_number' => $this->tax_number,
-                    'license_expiry_date' => $this->license_expiry_date,
-                    'description' => $this->description,
-                    'currency' => $this->currency,
-                    'main_branch_name' => $this->main_branch_name,
-                    'status' => $this->status, // تأكد من وجود هذا الحقل
-                    'logo' => null,
-                ]);
+            // تخزين صورة الشعار إذا تم رفعها
+            $logoPath = null;
+            if ($this->logo) {
+                $filename = uniqid().'.'.$this->logo->extension();
+                $logoPath = 'agencies/logos/'.$filename;
+                
+                // طريقة بديلة أكثر موثوقية لحفظ الملف
+                Storage::disk('public')->putFileAs(
+                    'agencies/logos',
+                    $this->logo,
+                    $filename
+                );
+
+                // التحقق من وجود الملف بعد الحفظ
+                if (!Storage::disk('public')->exists($logoPath)) {
+                    throw new \Exception("فشل في حفظ الملف في المسار: ".$logoPath);
+                }
+
+                Log::info('تم حفظ الصورة بنجاح', ['path' => $logoPath]);
+            }
+
+            $agency = Agency::create([
+                'name' => $this->name,
+                'email' => $this->email,
+                'phone' => $this->phone,
+                'landline' => $this->landline,
+                'address' => $this->address,
+                'license_number' => $this->license_number,
+                'commercial_record' => $this->commercial_record,
+                'tax_number' => $this->tax_number,
+                'license_expiry_date' => $this->license_expiry_date,
+                'description' => $this->description,
+                'currency' => $this->currency,
+                'main_branch_name' => $this->main_branch_name,
+                'status' => $this->status,
+                'logo' => $logoPath,
+            ]);
 
             $role = Role::where('name', 'agency_admin')->first();
 
@@ -96,12 +133,18 @@ class AddAgency extends Component
             $this->reset([
                 'name', 'email', 'phone', 'landline', 'address', 'license_number',
                 'commercial_record', 'tax_number', 'license_expiry_date', 'description',
-                'currency', 'main_branch_name', 'admin_name', 'admin_email', 'admin_password'
+                'currency', 'main_branch_name', 'admin_name', 'admin_email', 'admin_password', 'logo'
             ]);
 
             $this->successMessage = 'تمت إضافة الوكالة بنجاح مع تعيين أدمن خاص بها.';
+
         } catch (\Exception $e) {
             DB::rollBack();
+            // حذف الصورة إذا فشلت العملية
+            if (isset($logoPath) && Storage::disk('public')->exists($logoPath)) {
+                Storage::disk('public')->delete($logoPath);
+            }
+            Log::error('حدث خطأ أثناء إضافة الوكالة: '.$e->getMessage());
             $this->addError('general', 'حدث خطأ أثناء إضافة الوكالة: ' . $e->getMessage());
         }
     }
