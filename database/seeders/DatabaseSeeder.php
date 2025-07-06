@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
           AccountSeeder::class,
           PositionSeeder::class,
           DepartmentSeeder::class,
+          SystemDynamicListsSeeder::class,
         ]);
     }
 }

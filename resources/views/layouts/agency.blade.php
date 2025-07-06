@@ -41,40 +41,77 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="لوحة تحكم إدارة وكالات السفر">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>{{ $title ?? 'إدارة الوكالة' }}</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Toastify -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <!-- AlpineJS -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles & Scripts -->
     @livewireStyles
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- CSS Styles -->
     <style>
         :root {
-    --primary-100: {{ $colors['primary-100'] }};
-    --primary-500: {{ $colors['primary-500'] }};
-    --primary-600: {{ $colors['primary-600'] }};
-}   
+            --primary-100: {{ $colors['primary-100'] ?? '#d1fae5' }};
+            --primary-500: {{ $colors['primary-500'] ?? '#10b981' }};
+            --primary-600: {{ $colors['primary-600'] ?? '#059669' }};
+        }
+
         body.bg-dashboard {
             background: #e7e8fd !important;
         }
+
+        [dir="rtl"] .rotate-180 {
+            transform: rotate(180deg);
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
         .nav-item {
             transition: all 0.2s ease;
         }
+
         .nav-item.active {
             background-color: rgba(255, 255, 255, 0.2);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
+
         .nav-item:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
+
         .nav-text {
             transition: opacity 0.2s ease, max-width 0.2s ease;
             opacity: 0;
             max-width: 0;
             overflow: hidden;
         }
+
         .nav-item.active .nav-text,
         .nav-item:hover .nav-text {
             opacity: 1;
             max-width: 100px;
         }
+
         .nav-icon {
             display: flex;
             align-items: center;
@@ -85,38 +122,42 @@
             background-color: rgba(255, 255, 255, 0.1);
             transition: all 0.2s ease;
         }
+
         .nav-item:hover .nav-icon,
         .nav-item.active .nav-icon {
             background-color: rgba(255, 255, 255, 0.2);
         }
 
         .theme-selector-menu {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 100%;
-    margin-top: 0.5rem;
-    width: 12rem;
-    background: white;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    z-index: 50;
-    padding: 0.5rem;
-}
-.border-theme {
-    border-color: rgb(var(--primary-500));
-}
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 0.5rem;
+            width: 12rem;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            z-index: 50;
+            padding: 0.5rem;
+        }
 
-.focus-ring-theme:focus {
-    ring-color: rgb(var(--primary-400));
-}
+        .border-theme {
+            border-color: rgb(var(--primary-500));
+        }
 
-.group-theme-selector:hover .theme-selector-menu,
-.group-theme-selector:focus-within .theme-selector-menu {
-    display: block;
-}
+        .focus-ring-theme:focus {
+            ring-color: rgb(var(--primary-400));
+        }
+
+        .group-theme-selector:hover .theme-selector-menu,
+        .group-theme-selector:focus-within .theme-selector-menu {
+            display: block;
+        }
     </style>
 </head>
+
 <body class="bg-dashboard min-h-screen font-app">
     <!-- Navigation/Header -->
 <!-- Navigation/Header -->
@@ -257,6 +298,15 @@
                     </div>
                 </div>
             </div>
+             <!-- القوائم -->
+                 <a href="{{ route('agency.dynamic-lists') }}" class="nav-item flex items-center px-2 py-1 rounded-full {{ request()->routeIs('admin.dynamic-lists') ? 'active' : '' }}">
+                <span class="nav-icon">
+                    <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </span>
+                <span class="nav-text text-xs text-white whitespace-nowrap mr-2">القوائم</span>
+            </a>
             <!-- الخدمات -->
             <div class="relative group nav-item flex items-center px-2 py-1 rounded-full {{ request()->routeIs('agency.services') ? 'active' : '' }}">
                 <a href="{{ route('agency.services') }}" class="flex items-center">
@@ -553,3 +603,4 @@ document.querySelector('.group-theme-selector button').addEventListener('click',
 </script>
 </body>
 </html>
+

@@ -50,6 +50,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/agencies/add', AdminAddAgency::class)->name('admin.add-agency');
     Route::get('/agencies/edit/{id}', \App\Livewire\Admin\EditAgency::class)->name('admin.edit-agency');
     Route::get('/agencies/delete/{id}', \App\Livewire\Admin\DeleteAgency::class)->name('admin.delete-agency');
+        // System Configuration
+    Route::get('/dynamic-lists', \App\Livewire\Admin\DynamicLists::class)->name('admin.dynamic-lists');
 });
 
 // ==================== إعداد العملة ====================
@@ -79,7 +81,7 @@ Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
         Route::get('/sales/create', Create::class)->name('sales.create');
         Route::get('/customers/add', AddCustomer::class)->name('agency.customers.add');
         Route::get('/providers', \App\Livewire\Agency\Providers::class)->name('agency.providers');
-
+        Route::get('/dynamic-lists', \App\Livewire\Agency\DynamicLists::class)->name('agency.dynamic-lists');
         Route::get('/sales/report/pdf', [\App\Http\Controllers\Agency\ReportController::class, 'salesPdf'])
             ->name('agency.sales.report.pdf');
     

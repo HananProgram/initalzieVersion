@@ -126,4 +126,25 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Department::class);
     }
+
+    /**
+     * Scope: Only active users
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    /**
+     * Get the user's full type name
+     */
+    public function getTypeNameAttribute(): string
+    {
+        return match($this->user_type) {
+            self::USER_TYPES['super_admin'] => 'Super Administrator',
+            self::USER_TYPES['agency_admin'] => 'Agency Administrator',
+            self::USER_TYPES['agency_user'] => 'Agency User',
+            default => 'Unknown'
+        };
+    }
 }
