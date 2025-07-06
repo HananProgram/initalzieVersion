@@ -1,163 +1,61 @@
-@php
-    $themeColors = [
-        'emerald' => [
-            'primary-100' => '209, 250, 229',
-            'primary-500' => '16, 185, 129',
-            'primary-600' => '5, 150, 105',
-        ],
-        'blue' => [
-            'primary-100' => '219, 234, 254',
-            'primary-500' => '59, 130, 246',
-            'primary-600' => '37, 99, 235',
-        ],
-        'indigo' => [
-            'primary-100' => '224, 231, 255',
-            'primary-500' => '99, 102, 241',
-            'primary-600' => '79, 70, 229',
-        ],
-        'red' => [
-            'primary-100' => '254, 226, 226',
-            'primary-500' => '239, 68, 68',
-            'primary-600' => '220, 38, 38',
-        ],
-        'purple' => [
-            'primary-100' => '237, 233, 254',
-            'primary-500' => '168, 85, 247',
-            'primary-600' => '147, 51, 234',
-        ],
-        'pink' => [
-            'primary-100' => '252, 231, 243',
-            'primary-500' => '236, 72, 153',
-            'primary-600' => '219, 39, 119',
-        ],
-    ];
-    
-    $selectedTheme = $themeColor ?? 'emerald';
-    $colors = $themeColors[$selectedTheme] ?? $themeColors['emerald'];
-    
-@endphp
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="لوحة تحكم إدارة وكالات السفر">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>{{ $title ?? 'إدارة الوكالة' }}</title>
-
-    <!-- Favicon -->
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <!-- Toastify -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
-    <!-- AlpineJS -->
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Styles & Scripts -->
-    @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    @livewireStyles
+<style>
+    /* أنماط الأيقونات المغلقة والتحويم */
+    .nav-item {
+        transition: all 0.2s ease;
+    }
+    
+    .nav-item.active {
+        background-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-item:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .nav-text {
+        transition: opacity 0.2s ease, max-width 0.2s ease;
+        opacity: 0;
+        max-width: 0;
+        overflow: hidden;
+    }
+    
+    .nav-item.active .nav-text,
+    .nav-item:hover .nav-text {
+        opacity: 1;
+        max-width: 100px;
+    }
+    
+    .nav-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.1);
+        transition: all 0.2s ease;
+    }
+    
+    .nav-item:hover .nav-icon,
+    .nav-item.active .nav-icon {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+</style>
+    <x-theme-provider />
 
-    <!-- CSS Styles -->
-    <style>
-        :root {
-            --primary-100: {{ $colors['primary-100'] ?? '#d1fae5' }};
-            --primary-500: {{ $colors['primary-500'] ?? '#10b981' }};
-            --primary-600: {{ $colors['primary-600'] ?? '#059669' }};
-        }
-
-        body.bg-dashboard {
-            background: #e7e8fd !important;
-        }
-
-        [dir="rtl"] .rotate-180 {
-            transform: rotate(180deg);
-        }
-
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
-
-        .nav-item {
-            transition: all 0.2s ease;
-        }
-
-        .nav-item.active {
-            background-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .nav-text {
-            transition: opacity 0.2s ease, max-width 0.2s ease;
-            opacity: 0;
-            max-width: 0;
-            overflow: hidden;
-        }
-
-        .nav-item.active .nav-text,
-        .nav-item:hover .nav-text {
-            opacity: 1;
-            max-width: 100px;
-        }
-
-        .nav-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.1);
-            transition: all 0.2s ease;
-        }
-
-        .nav-item:hover .nav-icon,
-        .nav-item.active .nav-icon {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .theme-selector-menu {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 100%;
-            margin-top: 0.5rem;
-            width: 12rem;
-            background: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-                        0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            z-index: 50;
-            padding: 0.5rem;
-        }
-
-        .border-theme {
-            border-color: rgb(var(--primary-500));
-        }
-
-        .focus-ring-theme:focus {
-            ring-color: rgb(var(--primary-400));
-        }
-
-        .group-theme-selector:hover .theme-selector-menu,
-        .group-theme-selector:focus-within .theme-selector-menu {
-            display: block;
-        }
-    </style>
 </head>
-
 <body class="bg-dashboard min-h-screen font-app">
     <!-- Navigation/Header -->
 <!-- Navigation/Header -->
@@ -298,15 +196,6 @@
                     </div>
                 </div>
             </div>
-             <!-- القوائم -->
-                 <a href="{{ route('agency.dynamic-lists') }}" class="nav-item flex items-center px-2 py-1 rounded-full {{ request()->routeIs('admin.dynamic-lists') ? 'active' : '' }}">
-                <span class="nav-icon">
-                    <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </span>
-                <span class="nav-text text-xs text-white whitespace-nowrap mr-2">القوائم</span>
-            </a>
             <!-- الخدمات -->
             <div class="relative group nav-item flex items-center px-2 py-1 rounded-full {{ request()->routeIs('agency.services') ? 'active' : '' }}">
                 <a href="{{ route('agency.services') }}" class="flex items-center">
@@ -486,20 +375,7 @@
         </div>
 
         <!-- Theme Selector -->
-        <div class="relative group-theme-selector mr-2">
-            <button class="flex items-center justify-center h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 transition">
-                <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2m-4-4V5a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2h-4a2 2 0 01-2-2z"/>
-                </svg>
-            </button>
-            <div class="theme-selector-menu hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
-                <div class="p-2 grid grid-cols-3 gap-2">
-                    @foreach(['emerald', 'blue', 'indigo', 'red', 'purple', 'pink'] as $color)
-                        <button onclick="updateTheme('{{ $color }}')" class="h-8 w-8 rounded-full bg-{{ $color }}-500 hover:bg-{{ $color }}-600 transition"></button>
-                    @endforeach
-                </div>
-            </div>
-        </div>
+        <x-theme-selector />
         <!-- Language & User -->
         <div class="flex items-center gap-2 sm:gap-4">
             <span class="flex items-center justify-center h-10 w-10 rounded-full bg-white/10">
@@ -603,4 +479,3 @@ document.querySelector('.group-theme-selector button').addEventListener('click',
 </script>
 </body>
 </html>
-

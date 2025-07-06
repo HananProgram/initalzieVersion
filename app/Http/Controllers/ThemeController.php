@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Agency;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\ThemeService;
 
 class ThemeController extends Controller
 {
     public function updateTheme(Request $request)
     {
         $validated = $request->validate([
-            'theme_color' => 'required|in:emerald,blue,indigo,red,purple,pink'
+            'theme_color' => 'required|in:' . implode(',', ThemeService::getAvailableThemes())
         ]);
         
         $user = Auth::user();

@@ -39,7 +39,7 @@ $agencyId = DB::table('agencies')->insertGetId([
     'description' => 'وكالة اختبارية',
     'status' => 'active',
     'license_expiry_date' => now()->addYear(),
-    'max_users' => 10,
+    'max_users' => 3,
     'created_at' => now(),
     'updated_at' => now(),
 ]);

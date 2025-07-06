@@ -15,28 +15,29 @@
 
     <!-- Agency Info Card (for admins only) -->
     @if($user->isAgencyAdmin() && isset($permissionStats['agency']))
-    <div class="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg shadow-md p-6 text-white">
+    <div class="rounded-lg shadow-md p-6 text-white" 
+         style="background: linear-gradient(to right, rgb(var(--primary-500)) 0%, rgb(var(--primary-600)) 100%);">
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-2xl font-bold mb-2">{{ $agency->name }}</h2>
-                <p class="text-emerald-100 mb-1">{{ $agency->email }}</p>
-                <p class="text-emerald-100">{{ $agency->phone }}</p>
-                <p class="text-emerald-100 mt-2">{{ $agency->address }}</p>
+                <p class="text-white/80 mb-1">{{ $agency->email }}</p>
+                <p class="text-white/80">{{ $agency->phone }}</p>
+                <p class="text-white/80 mt-2">{{ $agency->address }}</p>
                 @if($permissionStats['agency']['isLicenseExpired'])
-                    <div class="mt-2 p-2 bg-red-500 bg-opacity-20 rounded-lg">
+                    <div class="mt-2 p-2 bg-red-500/20 rounded-lg">
                         <p class="text-red-200 text-sm">⚠️ انتهت صلاحية الترخيص</p>
                     </div>
                 @elseif($permissionStats['agency']['daysUntilExpiry'] <= 30)
-                    <div class="mt-2 p-2 bg-yellow-500 bg-opacity-20 rounded-lg">
+                    <div class="mt-2 p-2 bg-yellow-500/20 rounded-lg">
                         <p class="text-yellow-200 text-sm">⚠️ ينتهي الترخيص خلال {{ $permissionStats['agency']['daysUntilExpiry'] }} يوم</p>
                     </div>
                 @endif
             </div>
             <div class="text-right">
-                <div class="bg-white bg-opacity-20 rounded-lg p-4">
-                    <p class="text-sm text-emerald-100">رقم الترخيص</p>
+                <div class="bg-white/20 rounded-lg p-4">
+                    <p class="text-sm text-white/80">رقم الترخيص</p>
                     <p class="text-xl font-bold">{{ $agency->license_number }}</p>
-                    <p class="text-xs text-emerald-100 mt-1">الحد الأقصى: {{ $permissionStats['agency']['maxUsers'] }} مستخدم</p>
+                    <p class="text-xs text-white/80 mt-1">الحد الأقصى: {{ $permissionStats['agency']['maxUsers'] }} مستخدم</p>
                 </div>
             </div>
         </div>
@@ -49,7 +50,7 @@
         @if(isset($permissionStats['users']))
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center">
-                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                <div class="p-3 rounded-full" style="background-color: rgba(var(--primary-500), 0.1); color: rgb(var(--primary-500));">
                     <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
                     </svg>
@@ -57,7 +58,7 @@
                 <div class="mr-4">
                     <p class="text-sm font-medium text-gray-600">إجمالي المستخدمين</p>
                     <p class="text-2xl font-bold text-gray-900">{{ $permissionStats['users']['total'] }}</p>
-                    <p class="text-xs text-green-600">{{ $permissionStats['users']['active'] }} نشط</p>
+                    <p class="text-xs" style="color: rgb(var(--primary-500));">{{ $permissionStats['users']['active'] }} نشط</p>
                 </div>
             </div>
         </div>
@@ -67,7 +68,7 @@
         @if(isset($permissionStats['roles']))
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center">
-                <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                <div class="p-3 rounded-full" style="background-color: rgba(var(--primary-500), 0.1); color: rgb(var(--primary-500));">
                     <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                     </svg>
@@ -80,38 +81,37 @@
         </div>
         @endif
 
-     <!-- Services Statistics -->
-@if(isset($permissionStats['service_types']))
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <div class="flex items-center">
-            <div class="p-3 rounded-full bg-emerald-100 text-emerald-600">
-                <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 0a2 2 0 002 2h2a2 2 0 002-2m-6 0V7a2 2 0 012-2h2a2 2 0 012 2v10"/>
-                </svg>
-            </div>
-            <div class="mr-4">
-                <p class="text-sm font-medium text-gray-600">أنواع الخدمات</p>
-                <p class="text-2xl font-bold text-gray-900">{{ $permissionStats['service_types']['total'] }}</p>
-                <p class="text-xs text-green-600">{{ $permissionStats['service_types']['active'] }} نشط</p>
+        <!-- Services Statistics -->
+        @if(isset($permissionStats['service_types']))
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full" style="background-color: rgba(var(--primary-500), 0.1); color: rgb(var(--primary-500));">
+                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 0a2 2 0 002 2h2a2 2 0 002-2m-6 0V7a2 2 0 012-2h2a2 2 0 012 2v10"/>
+                    </svg>
+                </div>
+                <div class="mr-4">
+                    <p class="text-sm font-medium text-gray-600">أنواع الخدمات</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ $permissionStats['service_types']['total'] }}</p>
+                    <p class="text-xs" style="color: rgb(var(--primary-500));">{{ $permissionStats['service_types']['active'] }} نشط</p>
+                </div>
             </div>
         </div>
-    </div>
-@endif
-
+        @endif
 
         <!-- Agency Status (for admins only) -->
         @if($user->isAgencyAdmin() && isset($permissionStats['agency']))
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center">
-                <div class="p-3 rounded-full {{ $permissionStats['agency']['status'] === 'active' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
+                <div class="p-3 rounded-full" style="{{ $permissionStats['agency']['status'] === 'active' ? 'background-color: rgba(var(--primary-500), 0.1); color: rgb(var(--primary-500));' : 'background-color: rgba(239, 68, 68, 0.1); color: rgb(239, 68, 68);' }}">
                     <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
                 <div class="mr-4">
                     <p class="text-sm font-medium text-gray-600">حالة الوكالة</p>
-                    <p class="text-2xl font-bold {{ $permissionStats['agency']['status'] === 'active' ? 'text-green-600' : 'text-red-600' }}">
+                    <p class="text-2xl font-bold" style="{{ $permissionStats['agency']['status'] === 'active' ? 'color: rgb(var(--primary-500));' : 'color: rgb(239, 68, 68);' }}">
                         {{ $permissionStats['agency']['status'] === 'active' ? 'نشطة' : 'غير نشطة' }}
                     </p>
                 </div>
@@ -127,8 +127,8 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             @if($user->hasPermission('users.create'))
             <a href="{{ route('agency.users') }}" 
-               class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-emerald-50 hover:border-emerald-300 transition duration-200">
-                <div class="p-2 rounded-full bg-blue-100 text-blue-600 mr-4">
+               class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition duration-200">
+                <div class="p-2 rounded-full" style="background-color: rgba(var(--primary-500), 0.1); color: rgb(var(--primary-500));">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
@@ -142,8 +142,8 @@
             
             @if($user->hasPermission('roles.create'))
             <a href="{{ route('agency.roles') }}" 
-               class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-emerald-50 hover:border-emerald-300 transition duration-200">
-                <div class="p-2 rounded-full bg-purple-100 text-purple-600 mr-4">
+               class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition duration-200">
+                <div class="p-2 rounded-full" style="background-color: rgba(var(--primary-500), 0.1); color: rgb(var(--primary-500));">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                     </svg>
@@ -157,8 +157,8 @@
 
             @if($user->hasPermission('services.create'))
             <a href="{{ route('agency.services') }}" 
-               class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-emerald-50 hover:border-emerald-300 transition duration-200">
-                <div class="p-2 rounded-full bg-emerald-100 text-emerald-600 mr-4">
+               class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition duration-200">
+                <div class="p-2 rounded-full" style="background-color: rgba(var(--primary-500), 0.1); color: rgb(var(--primary-500));">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
@@ -182,7 +182,7 @@
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-bold text-gray-800">آخر المستخدمين المضافة</h2>
                     @if($user->hasPermission('users.view'))
-                    <a href="{{ route('agency.users') }}" class="text-emerald-600 hover:text-emerald-700 text-sm font-medium">
+                    <a href="{{ route('agency.users') }}" class="text-sm font-medium" style="color: rgb(var(--primary-500));">
                         عرض الكل
                     </a>
                     @endif
@@ -202,8 +202,8 @@
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="h-8 w-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3">
-                                            <span class="text-emerald-600 font-semibold text-sm">{{ substr($user->name, 0, 1) }}</span>
+                                        <div class="h-8 w-8 rounded-full flex items-center justify-center mr-3" style="background-color: rgba(var(--primary-500), 0.1);">
+                                            <span class="font-semibold text-sm" style="color: rgb(var(--primary-500));">{{ substr($user->name, 0, 1) }}</span>
                                         </div>
                                         <div>
                                             <div class="text-sm font-medium text-gray-900">{{ $user->name }}</div>
@@ -213,7 +213,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($user->role)
-                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full" style="background-color: rgba(var(--primary-500), 0.1); color: rgb(var(--primary-500));">
                                             {{ $user->role->display_name }}
                                         </span>
                                     @else
@@ -222,9 +222,9 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($user->is_active)
-                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">نشط</span>
+                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full" style="background-color: rgba(var(--primary-500), 0.1); color: rgb(var(--primary-500));">نشط</span>
                                     @else
-                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">غير نشط</span>
+                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full" style="background-color: rgba(239, 68, 68, 0.1); color: rgb(239, 68, 68);">غير نشط</span>
                                     @endif
                                 </td>
                             </tr>
@@ -246,7 +246,7 @@
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-bold text-gray-800">آخر الخدمات المضافة</h2>
                     @if($user->hasPermission('services.view'))
-                    <a href="{{ route('agency.services') }}" class="text-emerald-600 hover:text-emerald-700 text-sm font-medium">
+                    <a href="{{ route('agency.services') }}" class="text-sm font-medium" style="color: rgb(var(--primary-500));">
                         عرض الكل
                     </a>
                     @endif
@@ -266,8 +266,8 @@
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="h-8 w-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3">
-                                            <svg class="h-4 w-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="h-8 w-8 rounded-full flex items-center justify-center mr-3" style="background-color: rgba(var(--primary-500), 0.1);">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: rgb(var(--primary-500));">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 0a2 2 0 002 2h2a2 2 0 002-2m-6 0V7a2 2 0 012-2h2a2 2 0 012 2v10"></path>
                                             </svg>
                                         </div>
@@ -302,15 +302,16 @@
 
     <!-- Welcome Message for Regular Users -->
     @if($user->isAgencyUser() && !isset($permissionStats['users']) && !isset($permissionStats['services']))
-    <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg shadow-md p-8 text-white text-center">
+    <div class="rounded-lg shadow-md p-8 text-white text-center" 
+         style="background: linear-gradient(to right, rgb(var(--primary-500)) 0%, rgb(var(--primary-600)) 100%);">
         <div class="max-w-md mx-auto">
-            <div class="h-16 w-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div class="h-16 w-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
                 </svg>
             </div>
             <h2 class="text-2xl font-bold mb-2">مرحباً بك في {{ $agency->name }}</h2>
-            <p class="text-blue-100">يمكنك الوصول إلى الوظائف المتاحة لك من القائمة الجانبية</p>
+            <p class="text-white/80">يمكنك الوصول إلى الوظائف المتاحة لك من القائمة الجانبية</p>
         </div>
     </div>
     @endif
