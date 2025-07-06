@@ -66,7 +66,7 @@ Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
     Route::get('/change-password', ChangePassword::class)->name('agency.change-password');
 
     // باقي صفحات الوكالة (مع middleware التحقق من كلمة المرور ووجود العملة)
-    Route::middleware(['mustChangePassword', 'ensureCurrency'])->group(function () {
+   Route::middleware([ 'check.agency.subscription', 'mustChangePassword', 'ensureCurrency' ])->group(function () {
         Route::get('/dashboard', AgencyDashboard::class)->name('agency.dashboard');
         Route::get('/users', AgencyUsers::class)->name('agency.users');
         Route::get('/roles', AgencyRoles::class)->name('agency.roles');
@@ -78,12 +78,9 @@ Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
         Route::get('/customers/add', AddCustomer::class)->name('agency.customers.add');
         Route::get('/providers', \App\Livewire\Agency\Providers::class)->name('agency.providers');
 
-       // تقارير المبيعات
-        Route::prefix('sales/report')->group(function () {
-            // تقرير PDF
-            Route::get('/pdf', [\App\Http\Controllers\Agency\ReportController::class, 'salesPdf'])
-                ->name('agency.sales.report.pdf');
-            
+        Route::get('/sales/report/pdf', [\App\Http\Controllers\Agency\ReportController::class, 'salesPdf'])
+            ->name('agency.sales.report.pdf');
+    
             // تقرير Excel
             Route::get('/excel', function (Request $request) {
                 $fields = $request->get('fields');
@@ -96,7 +93,7 @@ Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
                 );
             })->name('agency.sales.report.excel');
         });
-    });
+   
 });
 
 // ==================== تسجيل الخروج ====================

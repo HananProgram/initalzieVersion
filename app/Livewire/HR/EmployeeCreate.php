@@ -52,6 +52,7 @@ class EmployeeCreate extends Component
             'agency_id' => Auth::user()->agency_id,
             'department_id' => $this->department_id,
             'position_id' => $this->position_id,
+            'is_active' => false,
         ]);
 
         session()->flash('success', 'تمت إضافة الموظف بنجاح');

@@ -34,8 +34,16 @@
             <h3 class="text-xl font-bold text-emerald-700 mb-4 text-center">
                 {{ $editingUser ? 'تعديل المستخدم' : 'إضافة مستخدم جديد' }}
             </h3>
-
+     <!-- تحت عنوان إدارة المستخدمين -->
+<div class="mb-4 bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 rounded-lg text-xs">
+    ملاحظة: يمكنك إضافة عدد غير محدود من المستخدمين، ولكن لن يتمكن سوى {{ auth()->user()->agency->max_users }} مستخدم من أن يكونوا نشطين في نفس الوقت.
+</div>
             <form wire:submit.prevent="{{ $editingUser ? 'updateUser' : 'addUser' }}" class="space-y-4 text-sm">
+                @if(session('error'))
+                    <div class="bg-red-100 border border-red-300 text-red-700 text-xs px-4 py-2 rounded-md">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 @php
                     $fieldClass = 'w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none bg-white text-xs peer';
                     $labelClass = 'absolute right-3 -top-2.5 px-1 bg-white text-xs text-gray-500 transition-all peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-emerald-600';
@@ -205,16 +213,6 @@
              x-transition
              class="fixed bottom-4 right-4 bg-emerald-500 text-white px-4 py-2 rounded-md shadow text-sm">
             {{ session('message') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div x-data="{ show: true }"
-             x-init="setTimeout(() => show = false, 2000)"
-             x-show="show"
-             x-transition
-             class="fixed bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-md shadow text-sm">
-            {{ session('error') }}
         </div>
     @endif
 

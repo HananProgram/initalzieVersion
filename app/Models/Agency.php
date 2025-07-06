@@ -25,11 +25,16 @@ class Agency extends Model
          'main_branch_name',
         'landline', 
         'currency',
+        'subscription_start_date',
+        'subscription_end_date'
            
     ];
 
     protected $casts = [
         'license_expiry_date' => 'date',
+        'subscription_start_date'=>'date',
+        'subscription_end_date'=>'date'
+
     ];
 
     public function users()

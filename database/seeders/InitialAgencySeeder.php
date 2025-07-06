@@ -26,6 +26,8 @@ class InitialAgencySeeder extends Seeder
             'description' => 'وكالة تجريبية',
             'status' => 'active',
             'license_expiry_date' => now()->addYear(),
+             'subscription_start_date' => now(),
+            'subscription_end_date' => now()->addMonth(), // شهر مجاني مثلاً
             'max_users' => 10,
             'created_at' => now(),
             'updated_at' => now(),

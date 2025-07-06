@@ -131,6 +131,20 @@
                         @error('description') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
                     </div>
                 </div>
+                <!-- الصف السادس - تواريخ الاشتراك -->
+                <div class="grid md:grid-cols-3 gap-3">
+                    <div class="{{ $containerClass }}">
+                        <input type="date" wire:model.defer="subscription_start_date" class="{{ $fieldClass }}" placeholder="تاريخ بداية الاشتراك" />
+                        <label class="{{ $labelClass }}">بداية الاشتراك</label>
+                        @error('subscription_start_date') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="{{ $containerClass }}">
+                        <input type="date" wire:model.defer="subscription_end_date" class="{{ $fieldClass }}" placeholder="تاريخ نهاية الاشتراك" />
+                        <label class="{{ $labelClass }}">نهاية الاشتراك</label>
+                        @error('subscription_end_date') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+                    </div>
+                </div>
 
                 <!-- قسم بيانات الأدمن -->
                 <div class="border-t border-gray-200 pt-6 mt-6">

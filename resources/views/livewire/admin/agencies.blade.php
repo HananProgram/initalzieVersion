@@ -82,6 +82,8 @@
                             <th class="px-3 py-2 whitespace-nowrap">الرقم الضريبي</th>
                             <th class="px-3 py-2 whitespace-nowrap">الحالة</th>
                             <th class="px-3 py-2 whitespace-nowrap">انتهاء الرخصة</th>
+                            <th class="px-3 py-2 whitespace-nowrap">بداية الاشتراك</th>
+                            <th class="px-3 py-2 whitespace-nowrap">نهاية الاشتراك</th>
                             <th class="px-3 py-2 whitespace-nowrap">المستخدمين</th>
                             <th class="px-3 py-2 whitespace-nowrap">الإجراءات</th>
                         </tr>
@@ -130,6 +132,13 @@
                                     @endif
                                 </td>
                                 <td class="px-3 py-2">{{ $agency->license_expiry_date->format('Y-m-d') }}</td>
+                                <td class="px-3 py-2">
+                                                    {{ optional($agency->subscription_start_date)->format('Y-m-d') ?? '—' }}
+                                                </td>
+                                                <td class="px-3 py-2">
+                                                    {{ optional($agency->subscription_end_date)->format('Y-m-d') ?? '—' }}
+                                                </td>
+
                                 <td class="px-3 py-2 text-center">{{ $agency->max_users }}</td>
                                 <td class="px-3 py-2 whitespace-nowrap">
                                     <button wire:click="showEditModal({{ $agency->id }})"
