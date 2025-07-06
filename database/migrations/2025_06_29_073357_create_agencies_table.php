@@ -27,7 +27,7 @@ return new class extends Migration {
             $table->date('license_expiry_date'); // تاريخ انتهاء الرخصة
             $table->date('subscription_start_date')->nullable(); 
             $table->date('subscription_end_date')->nullable();   
-
+            $table->string('theme_color')->default('emerald');
             $table->timestamps();
         });
     }

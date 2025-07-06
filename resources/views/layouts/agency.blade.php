@@ -1,3 +1,41 @@
+@php
+    $themeColors = [
+        'emerald' => [
+            'primary-100' => '209, 250, 229',
+            'primary-500' => '16, 185, 129',
+            'primary-600' => '5, 150, 105',
+        ],
+        'blue' => [
+            'primary-100' => '219, 234, 254',
+            'primary-500' => '59, 130, 246',
+            'primary-600' => '37, 99, 235',
+        ],
+        'indigo' => [
+            'primary-100' => '224, 231, 255',
+            'primary-500' => '99, 102, 241',
+            'primary-600' => '79, 70, 229',
+        ],
+        'red' => [
+            'primary-100' => '254, 226, 226',
+            'primary-500' => '239, 68, 68',
+            'primary-600' => '220, 38, 38',
+        ],
+        'purple' => [
+            'primary-100' => '237, 233, 254',
+            'primary-500' => '168, 85, 247',
+            'primary-600' => '147, 51, 234',
+        ],
+        'pink' => [
+            'primary-100' => '252, 231, 243',
+            'primary-500' => '236, 72, 153',
+            'primary-600' => '219, 39, 119',
+        ],
+    ];
+    
+    $selectedTheme = $themeColor ?? 'emerald';
+    $colors = $themeColors[$selectedTheme] ?? $themeColors['emerald'];
+    
+@endphp
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -8,6 +46,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     <style>
+        :root {
+    --primary-100: {{ $colors['primary-100'] }};
+    --primary-500: {{ $colors['primary-500'] }};
+    --primary-600: {{ $colors['primary-600'] }};
+}   
         body.bg-dashboard {
             background: #e7e8fd !important;
         }
@@ -46,22 +89,48 @@
         .nav-item.active .nav-icon {
             background-color: rgba(255, 255, 255, 0.2);
         }
+
+        .theme-selector-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 0.5rem;
+    width: 12rem;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    z-index: 50;
+    padding: 0.5rem;
+}
+.border-theme {
+    border-color: rgb(var(--primary-500));
+}
+
+.focus-ring-theme:focus {
+    ring-color: rgb(var(--primary-400));
+}
+
+.group-theme-selector:hover .theme-selector-menu,
+.group-theme-selector:focus-within .theme-selector-menu {
+    display: block;
+}
     </style>
 </head>
 <body class="bg-dashboard min-h-screen font-app">
     <!-- Navigation/Header -->
 <!-- Navigation/Header -->
-<nav class="w-full flex items-center justify-between px-6 shadow-sm rounded-t-2xl"
-     style="background: linear-gradient(90deg, #10B981 0%, #14B8A6 100%); padding-top: 8px; padding-bottom: 8px; min-height:48px;">
+<nav class="w-full flex items-center justify-between px-6 shadow-sm rounded-t-2xl nav-gradient"
+     style="padding-top: 8px; padding-bottom: 8px; min-height:48px;">
 
         <!-- Logo & Agency Name -->
         <div class="flex items-center gap-3">
             <svg class="h-9 w-9" viewBox="0 0 32 32" fill="none">
-                <rect x="2" y="8" width="28" height="20" rx="6" fill="#28A745"/>
+                <rect x="2" y="8" width="28" height="20" rx="6" fill="rgb(var(--primary-500))"/>
                 <rect x="8" y="14" width="4" height="4" rx="1" fill="#fff"/>
                 <rect x="14" y="14" width="4" height="4" rx="1" fill="#fff"/>
                 <rect x="20" y="14" width="4" height="4" rx="1" fill="#fff"/>
-                <rect x="12" y="22" width="8" height="4" rx="2" fill="#3CCFCF"/>
+                <rect x="12" y="22" width="8" height="4" rx="2" fill="rgb(var(--primary-600))"/>
             </svg>
             <span class="text-white text-lg font-bold tracking-tight">{{ Auth::user()->agency->name ?? 'Travel X' }}</span>
         </div>
@@ -366,6 +435,21 @@
             </div>
         </div>
 
+        <!-- Theme Selector -->
+        <div class="relative group-theme-selector mr-2">
+            <button class="flex items-center justify-center h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 transition">
+                <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2m-4-4V5a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2h-4a2 2 0 01-2-2z"/>
+                </svg>
+            </button>
+            <div class="theme-selector-menu hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
+                <div class="p-2 grid grid-cols-3 gap-2">
+                    @foreach(['emerald', 'blue', 'indigo', 'red', 'purple', 'pink'] as $color)
+                        <button onclick="updateTheme('{{ $color }}')" class="h-8 w-8 rounded-full bg-{{ $color }}-500 hover:bg-{{ $color }}-600 transition"></button>
+                    @endforeach
+                </div>
+            </div>
+        </div>
         <!-- Language & User -->
         <div class="flex items-center gap-2 sm:gap-4">
             <span class="flex items-center justify-center h-10 w-10 rounded-full bg-white/10">
@@ -373,7 +457,7 @@
             </span>
             <!-- Dropdown User -->
             <div class="relative group-user-dropdown" tabindex="0">
-                <button class="flex items-center justify-center h-10 w-10 rounded-full border-2 border-[#28A745] bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#3CCFCF]">
+                <button class="flex items-center justify-center h-10 w-10 rounded-full border-2 border-theme bg-white/10 focus:outline-none focus:ring-2 focus-ring-theme">
                     <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24">
                         <circle cx="12" cy="8" r="4" fill="#28A745"/>
                         <rect x="5" y="15" width="14" height="6" rx="3" fill="#3CCFCF"/>
@@ -395,6 +479,9 @@
     </nav>
 
     <style>
+        .nav-gradient {
+            background: linear-gradient(90deg, rgb(var(--primary-500)) 0%, rgb(var(--primary-600)) 100%);
+        }
         .group-user-dropdown:focus-within .user-dropdown-menu,
         .group-user-dropdown:hover .user-dropdown-menu {
             display: block;
@@ -415,6 +502,7 @@
         /* دعم القوائم الفرعية المتشعبة */
         .group:hover .group-hover\2f block { display: block !important; }
         .group\/sub:hover .group-hover\/sub\:block { display: block !important; }
+
     </style>
 
     <!-- Main Content (Full Width) -->
@@ -426,5 +514,42 @@
         </div>
     </div>
     @livewireScripts
+<script>
+function updateTheme(theme) {
+    fetch('/update-theme', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ theme_color: theme })
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            alert('حدث خطأ أثناء تغيير اللون');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('حدث خطأ في الاتصال');
+    });
+}
+
+// إغلاق القائمة عند النقر خارجها
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.group-theme-selector')) {
+        document.querySelector('.theme-selector-menu').classList.add('hidden');
+    }
+});
+
+// فتح/إغلاق القائمة
+document.querySelector('.group-theme-selector button').addEventListener('click', function(e) {
+    e.stopPropagation();
+    document.querySelector('.theme-selector-menu').classList.toggle('hidden');
+});
+</script>
 </body>
 </html>

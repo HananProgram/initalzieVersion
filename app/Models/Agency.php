@@ -26,8 +26,8 @@ class Agency extends Model
         'landline', 
         'currency',
         'subscription_start_date',
-        'subscription_end_date'
-           
+        'subscription_end_date',
+        'theme_color'        
     ];
 
     protected $casts = [

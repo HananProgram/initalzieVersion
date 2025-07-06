@@ -30,6 +30,11 @@ class AgencyMiddleware
             return redirect('/')->with('error', 'لم يتم ربطك بأي وكالة.');
         }
 
+        // التحقق من أن المستخدم لديه صلاحية تغيير الثيم (المشرف فقط)
+        if ($request->is('update-theme') && !$user->isAgencyAdmin() && !$user->isSuperAdmin()) {
+            return response()->json(['error' => 'ليس لديك صلاحية لتغيير لون الثيم'], 403);
+        }
+
         return $next($request);
     }
 }

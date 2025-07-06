@@ -20,6 +20,8 @@ use App\Livewire\HR\EmployeeIndex;
 use App\Exports\SalesExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ThemeController;
+
 // الصفحة الرئيسية
 Route::get('/', function () {
     return view('welcome');
@@ -112,3 +114,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/hr/employees', EmployeeIndex::class)->name('hr.employees.index');
     Route::get('/hr/employees/{id}/edit', \App\Livewire\HR\EmployeeEdit::class)->name('hr.employees.edit');
 });
+
+Route::post('/update-theme', [ThemeController::class, 'updateTheme'])
+    ->middleware(['auth', 'agency']);
