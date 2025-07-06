@@ -9,24 +9,25 @@ return new class extends Migration {
     {
         Schema::create('agencies', function (Blueprint $table) {
             $table->id();
-
-            $table->string('name'); // اسم الوكالة
-            $table->string('main_branch_name'); // اسم الفرع الرئيسي
-            $table->string('email')->unique(); // البريد الإلكتروني
-            $table->string('phone')->nullable(); // رقم الهاتف
-            $table->string('landline')->nullable(); // الهاتف الثابت
-            $table->string('logo')->nullable(); // الشعار
-            $table->string('currency'); // العملة
-            $table->text('address')->nullable(); // العنوان
-            $table->string('license_number')->unique(); // رقم الرخصة
-            $table->string('commercial_record')->unique(); // السجل التجاري
-            $table->string('tax_number')->unique(); // الرقم الضريبي
-            $table->text('description')->nullable(); // وصف
-            $table->enum('status', ['active', 'inactive', 'suspended'])->default('active'); // الحالة
-            $table->date('license_expiry_date'); // تاريخ انتهاء الرخصة
-
+            $table->string('name');
+            $table->string('main_branch_name');
+            $table->string('email')->unique();
+            $table->string('phone')->nullable();
+            $table->string('landline')->nullable();
+            $table->string('logo')->nullable();
+            $table->string('currency');
+            $table->text('address')->nullable();
+            $table->string('license_number')->unique();
+            $table->string('commercial_record')->unique();
+            $table->string('tax_number')->unique();
+            $table->text('description')->nullable();
+            $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
+            $table->date('license_expiry_date');
+            $table->date('subscription_start_date')->nullable(); 
+            $table->date('subscription_end_date')->nullable();   
             $table->timestamps();
-        });
+});
+
     }
 
     public function down(): void

@@ -10,6 +10,11 @@
                 <h2 class="text-3xl font-extrabold text-emerald-700 mb-1 drop-shadow">تسجيل الدخول</h2>
                 <p class="text-emerald-400 font-medium">مرحباً بعودتك! أدخل بياناتك للمتابعة</p>
             </div>
+                                @if ($errors->has('subscription'))
+                                    <div class="text-red-600 text-sm mb-2">
+                                        {{ $errors->first('subscription') }}
+                                    </div>
+                                @endif
 
             <form wire:submit.prevent="login" class="space-y-6">
                 <div>

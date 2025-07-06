@@ -57,14 +57,12 @@ Route::middleware(['auth'])->group(function () {
 // ==================== Agency Routes ====================
 Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
 
-    // إعداد العملة للمرة الأولى (يجب أن يكون بدون middleware "money")
+    // إعداد العملة وكلمة المرور بدون تحقق الاشتراك
     Route::get('/setup-currency', SetupCurrency::class)->name('agency.setup-currency');
-
-    // صفحة تغيير كلمة المرور (بدون تحقق من العملة أو كلمة المرور)
     Route::get('/change-password', ChangePassword::class)->name('agency.change-password');
 
-    // باقي صفحات الوكالة (مع middleware التحقق من كلمة المرور ووجود العملة)
-    Route::middleware(['mustChangePassword', 'ensureCurrency'])->group(function () {
+    // ✅ هنا نضيف middleware التحقق من الاشتراك
+    Route::middleware([ 'check.agency.subscription', 'mustChangePassword', 'ensureCurrency' ])->group(function () {
         Route::get('/dashboard', AgencyDashboard::class)->name('agency.dashboard');
         Route::get('/users', AgencyUsers::class)->name('agency.users');
         Route::get('/roles', AgencyRoles::class)->name('agency.roles');
@@ -76,11 +74,11 @@ Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
         Route::get('/customers/add', AddCustomer::class)->name('agency.customers.add');
         Route::get('/providers', \App\Livewire\Agency\Providers::class)->name('agency.providers');
 
-        // تقرير المبيعات PDF
         Route::get('/sales/report/pdf', [\App\Http\Controllers\Agency\ReportController::class, 'salesPdf'])
             ->name('agency.sales.report.pdf');
     });
 });
+
 
 // ==================== تسجيل الخروج ====================
 Route::post('/logout', function () {

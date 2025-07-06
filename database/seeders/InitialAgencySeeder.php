@@ -27,6 +27,8 @@ class InitialAgencySeeder extends Seeder
             'status' => 'active',
             'license_expiry_date' => now()->addYear(),
             'max_users' => 10,
+            'subscription_start_date' => now(),
+            'subscription_end_date' => now()->addMonth(), // شهر مجاني مثلاً
             'created_at' => now(),
             'updated_at' => now(),
         ]);

@@ -25,6 +25,8 @@ class Agency extends Model
          'main_branch_name',
         'landline', 
         'currency',
+        'subscription_start_date',
+        'subscription_end_date'
            
     ];
 

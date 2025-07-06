@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Livewire\Admin;
 
 use Livewire\Component;
@@ -26,6 +25,11 @@ class AddAgency extends Component
     public $currency;
     public $main_branch_name;
     public $status = 'active';
+
+    // ✅ حقول الاشتراك
+    public $subscription_start_date;
+    public $subscription_end_date;
+
     // بيانات أدمن الوكالة
     public $admin_name;
     public $admin_email;
@@ -45,6 +49,8 @@ class AddAgency extends Component
             'commercial_record' => 'required|string|unique:agencies,commercial_record',
             'tax_number' => 'required|string|unique:agencies,tax_number',
             'license_expiry_date' => 'required|date',
+            'subscription_start_date' => 'required|date|before_or_equal:subscription_end_date',
+            'subscription_end_date' => 'required|date|after_or_equal:subscription_start_date',
             'description' => 'nullable|string',
             'currency' => 'required|string|max:10',
             'main_branch_name' => 'required|string|max:255',
@@ -61,22 +67,26 @@ class AddAgency extends Component
 
         DB::beginTransaction();
         try {
-                $agency = Agency::create([
-                    'name' => $this->name,
-                    'email' => $this->email,
-                    'phone' => $this->phone,
-                    'landline' => $this->landline,
-                    'address' => $this->address,
-                    'license_number' => $this->license_number,
-                    'commercial_record' => $this->commercial_record,
-                    'tax_number' => $this->tax_number,
-                    'license_expiry_date' => $this->license_expiry_date,
-                    'description' => $this->description,
-                    'currency' => $this->currency,
-                    'main_branch_name' => $this->main_branch_name,
-                    'status' => $this->status, // تأكد من وجود هذا الحقل
-                    'logo' => null,
-                ]);
+            $agency = Agency::create([
+                'name' => $this->name,
+                'email' => $this->email,
+                'phone' => $this->phone,
+                'landline' => $this->landline,
+                'address' => $this->address,
+                'license_number' => $this->license_number,
+                'commercial_record' => $this->commercial_record,
+                'tax_number' => $this->tax_number,
+                'license_expiry_date' => $this->license_expiry_date,
+                'description' => $this->description,
+                'currency' => $this->currency,
+                'main_branch_name' => $this->main_branch_name,
+                'status' => $this->status,
+                'logo' => null,
+
+                // ✅ تواريخ الاشتراك
+                'subscription_start_date' => $this->subscription_start_date,
+                'subscription_end_date' => $this->subscription_end_date,
+            ]);
 
             $role = Role::where('name', 'agency_admin')->first();
 
@@ -96,7 +106,9 @@ class AddAgency extends Component
             $this->reset([
                 'name', 'email', 'phone', 'landline', 'address', 'license_number',
                 'commercial_record', 'tax_number', 'license_expiry_date', 'description',
-                'currency', 'main_branch_name', 'admin_name', 'admin_email', 'admin_password'
+                'currency', 'main_branch_name', 'admin_name', 'admin_email', 'admin_password',
+                // ✅ إعادة تعيين تواريخ الاشتراك
+                'subscription_start_date', 'subscription_end_date',
             ]);
 
             $this->successMessage = 'تمت إضافة الوكالة بنجاح مع تعيين أدمن خاص بها.';
