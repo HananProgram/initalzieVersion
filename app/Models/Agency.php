@@ -25,7 +25,7 @@ class Agency extends Model
          'main_branch_name',
         'landline', 
         'currency',
-           
+        'theme_color',
     ];
 
     protected $casts = [

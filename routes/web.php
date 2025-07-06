@@ -17,6 +17,7 @@ use App\Livewire\Sales\Index;
 use App\Livewire\Sales\Create;
 use App\Http\Controllers\CurrencySetupController;
 use App\Livewire\HR\EmployeeIndex;
+use App\Http\Controllers\ThemeController;
 
 // الصفحة الرئيسية
 Route::get('/', function () {
@@ -98,3 +99,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/hr/employees', EmployeeIndex::class)->name('hr.employees.index');
     Route::get('/hr/employees/{id}/edit', \App\Livewire\HR\EmployeeEdit::class)->name('hr.employees.edit');
 });
+Route::post('/update-theme', [ThemeController::class, 'updateTheme'])
+    ->middleware(['auth', 'agency']);

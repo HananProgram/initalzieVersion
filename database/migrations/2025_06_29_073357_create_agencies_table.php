@@ -24,7 +24,7 @@ return new class extends Migration {
             $table->text('description')->nullable(); // وصف
             $table->enum('status', ['active', 'inactive', 'suspended'])->default('active'); // الحالة
             $table->date('license_expiry_date'); // تاريخ انتهاء الرخصة
-
+            $table->string('theme_color')->default('emerald');
             $table->timestamps();
         });
     }
