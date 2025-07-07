@@ -21,7 +21,7 @@ use App\Exports\SalesExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ThemeController;
-
+use App\Http\Controllers\SystemSettingsController;
 // الصفحة الرئيسية
 Route::get('/', function () {
     return view('welcome');
@@ -52,6 +52,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/agencies/delete/{id}', \App\Livewire\Admin\DeleteAgency::class)->name('admin.delete-agency');
         // System Configuration
     Route::get('/dynamic-lists', \App\Livewire\Admin\DynamicLists::class)->name('admin.dynamic-lists');
+
+      Route::post('/admin/system/update-theme', [SystemSettingsController::class, 'updateTheme'])
+        ->name('admin.system.update-theme');
+        
+     //  Route::middleware(['auth', 'can:manage-system'])->group(function () {
+   // Route::post('/admin/system/update-theme', [SystemSettingsController::class, 'updateTheme']);
+//});
 });
 
 // ==================== إعداد العملة ====================
@@ -119,3 +126,8 @@ Route::middleware(['auth'])->group(function () {
 
 Route::post('/update-theme', [ThemeController::class, 'updateTheme'])
     ->middleware(['auth', 'agency']);
+// Route::middleware(['auth', 'can:manage-system'])->group(function () {
+//     Route::post('/admin/system/update-theme', [SystemSettingsController::class, 'updateTheme'])
+//         ->name('admin.system.update-theme');
+// });
+ 

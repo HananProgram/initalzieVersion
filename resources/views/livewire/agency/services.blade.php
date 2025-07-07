@@ -1,10 +1,12 @@
 <div class="space-y-6">
     <!-- العنوان والرسائل -->
     <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold text-emerald-700 border-b-2 border-emerald-200 pb-2">إدارة أنواع الخدمات</h2>
+        <h2 class="text-2xl font-bold" style="color: rgb(var(--primary-700)); border-bottom: 2px solid rgba(var(--primary-200), 0.5); padding-bottom: 0.5rem;">
+            إدارة أنواع الخدمات
+        </h2>
         
         @if(session('message'))
-            <div class="bg-emerald-100 text-emerald-700 rounded-md px-4 py-2 text-center shadow">
+            <div class="rounded-md px-4 py-2 text-center shadow" style="background-color: rgba(var(--primary-100), 0.5); color: rgb(var(--primary-700));">
                 {{ session('message') }}
             </div>
         @endif
@@ -13,11 +15,11 @@
     <!-- محتوى الصفحة -->
     <div class="bg-white rounded-xl shadow-md p-4">
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold text-emerald-700">قائمة أنواع الخدمات</h2>
+            <h2 class="text-xl font-bold" style="color: rgb(var(--primary-700));">قائمة أنواع الخدمات</h2>
             
             <button wire:click="showAddModal"
-                    class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 
-                        text-white font-bold px-4 py-2 rounded-xl shadow-md hover:shadow-xl transition duration-300 text-sm">
+                    class="text-white font-bold px-4 py-2 rounded-xl shadow-md transition duration-300 text-sm"
+                    style="background: linear-gradient(to right, rgb(var(--primary-500)) 0%, rgb(var(--primary-600)) 100%);">
                 + إضافة نوع خدمة
             </button>
         </div>
@@ -39,7 +41,7 @@
                             <td class="px-2 py-1 font-medium">{{ $type->name }}</td>
                             <td class="px-2 py-1 whitespace-nowrap">
                                 <button wire:click="showEditModal({{ $type->id }})"
-                                        class="text-emerald-600 hover:text-emerald-800 font-medium text-xs mx-1">
+                                        class="font-medium text-xs mx-1" style="color: rgb(var(--primary-600));">
                                     تعديل
                                 </button>
                             </td>
@@ -63,14 +65,14 @@
                     &times;
                 </button>
 
-                <h3 class="text-xl font-bold text-emerald-700 mb-4 text-center">
+                <h3 class="text-xl font-bold mb-4 text-center" style="color: rgb(var(--primary-700));">
                     {{ $editMode ? 'تعديل نوع الخدمة' : 'إضافة نوع خدمة جديدة' }}
                 </h3>
 
                 <form wire:submit.prevent="saveServiceType" class="space-y-4 text-sm">
                     @php
-                        $fieldClass = 'w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none bg-white text-xs peer';
-                        $labelClass = 'absolute right-3 -top-2.5 px-1 bg-white text-xs text-gray-500 transition-all peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-emerald-600';
+                        $fieldClass = 'w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-[rgb(var(--primary-500))] focus:border-[rgb(var(--primary-500))] focus:outline-none bg-white text-xs peer';
+                        $labelClass = 'absolute right-3 -top-2.5 px-1 bg-white text-xs text-gray-500 transition-all peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-[rgb(var(--primary-600))]';
                         $containerClass = 'relative mt-1';
                     @endphp
 
@@ -87,13 +89,25 @@
                             إلغاء
                         </button>
                         <button type="submit"
-                                class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 
-                                    text-white font-bold px-4 py-2 rounded-xl shadow-md hover:shadow-xl transition duration-300 text-sm">
+                                class="text-white font-bold px-4 py-2 rounded-xl shadow-md transition duration-300 text-sm"
+                                style="background: linear-gradient(to right, rgb(var(--primary-500)) 0%, rgb(var(--primary-600)) 100%);">
                             {{ $editMode ? 'تحديث' : 'إضافة' }}
                         </button>
                     </div>
                 </form>
             </div>
+        </div>
+    @endif
+
+    <!-- رسائل النظام -->
+    @if(session()->has('message'))
+        <div x-data="{ show: true }"
+             x-init="setTimeout(() => show = false, 2000)"
+             x-show="show"
+             x-transition
+             class="fixed bottom-4 right-4 text-white px-4 py-2 rounded-md shadow text-sm" 
+             style="background-color: rgb(var(--primary-500));">
+            {{ session('message') }}
         </div>
     @endif
 
@@ -108,7 +122,27 @@
         .peer:focus + label {
             top: -0.5rem;
             font-size: 0.75rem;
-            color: #059669;
+            color: rgb(var(--primary-600));
+        }
+
+        /* تأثير hover لزر الإضافة */
+        button[wire\:click="showAddModal"]:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(var(--primary-500), 0.2);
+        }
+
+        button[wire\:click="showAddModal"]:active {
+            transform: translateY(0);
+        }
+        
+        /* تأثير زر الحفظ في النافذة المنبثقة */
+        form button[type="submit"]:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(var(--primary-500), 0.2);
+        }
+
+        form button[type="submit"]:active {
+            transform: translateY(0);
         }
     </style>
 </div>

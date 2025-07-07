@@ -6,9 +6,15 @@ use Illuminate\Support\ServiceProvider;
 use Spatie\Browsershot\Browsershot;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use App\Services\ThemeService;
 
 class AppServiceProvider extends ServiceProvider
 {
+
+    protected $policies = [
+    \App\Models\SystemSetting::class => \App\Policies\SystemPolicy::class,
+];
+
     /**
      * Register any application services.
      */
@@ -20,13 +26,21 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
-        // مشاركة متغير theme_color مع جميع واجهات blade
+public function boot()
+{
+    try {
         view()->composer('*', function ($view) {
-            if (auth()->check() && auth()->user()->agency) {
-                $view->with('themeColor', auth()->user()->agency->theme_color ?? 'emerald');
+            if (auth()->check()) {
+                $theme = auth()->user()->isSuperAdmin() 
+                    ? ThemeService::getSystemTheme()
+                    : (auth()->user()->agency->theme_color ?? 'emerald');
+                
+                $colors = ThemeService::getCurrentThemeColors($theme);
+                $view->with('themeColors', $colors);
             }
         });
+    } catch (\Exception $e) {
+        Log::error('Theme provider error: ' . $e->getMessage());
     }
+}
 }

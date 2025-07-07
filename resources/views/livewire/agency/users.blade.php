@@ -1,12 +1,15 @@
 <div class="space-y-6">
     <!-- العنوان الرئيسي -->
     <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold text-emerald-700 border-b-2 border-emerald-200 pb-2">إدارة المستخدمين</h2>
+        <h2 class="text-2xl font-bold" style="color: rgb(var(--primary-700)); border-bottom: 2px solid rgba(var(--primary-200), 0.5); padding-bottom: 0.5rem;">
+            إدارة المستخدمين
+        </h2>
         <button wire:click="$set('showAddForm', true)" 
-                class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 
-                       text-white font-bold px-4 py-2 rounded-xl shadow-md hover:shadow-xl transition duration-300 text-sm">
+                class="text-white font-bold px-4 py-2 rounded-xl shadow-md transition duration-300 text-sm"
+                style="background: linear-gradient(to right, rgb(var(--primary-500)) 0%, rgb(var(--primary-600)) 100%);">
             + إضافة مستخدم جديد
         </button>
+
     </div>
 
     <!-- حقل البحث -->
@@ -14,7 +17,7 @@
         <div class="relative mt-1">
             <input wire:model.live="search" 
                    type="text" 
-                   class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none bg-white text-xs"
+                   class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-[rgb(var(--primary-500))] focus:border-[rgb(var(--primary-500))] focus:outline-none bg-white text-xs"
                    placeholder=" ">
             <label class="absolute right-3 -top-2.5 px-1 bg-white text-xs text-gray-500">
                 بحث في المستخدمين
@@ -31,13 +34,15 @@
                 &times;
             </button>
 
-            <h3 class="text-xl font-bold text-emerald-700 mb-4 text-center">
+            <h3 class="text-xl font-bold mb-4 text-center" style="color: rgb(var(--primary-700));">
                 {{ $editingUser ? 'تعديل المستخدم' : 'إضافة مستخدم جديد' }}
             </h3>
-     <!-- تحت عنوان إدارة المستخدمين -->
-<div class="mb-4 bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 rounded-lg text-xs">
-    ملاحظة: يمكنك إضافة عدد غير محدود من المستخدمين، ولكن لن يتمكن سوى {{ auth()->user()->agency->max_users }} مستخدم من أن يكونوا نشطين في نفس الوقت.
-</div>
+            
+            <!-- تحت عنوان إدارة المستخدمين -->
+            <div class="mb-4 px-4 py-2 rounded-lg text-xs" style="background-color: rgba(var(--primary-100), 0.5); border: 1px solid rgba(var(--primary-200), 0.5); color: rgb(var(--primary-700));">
+                ملاحظة: يمكنك إضافة عدد غير محدود من المستخدمين، ولكن لن يتمكن سوى {{ auth()->user()->agency->max_users }} مستخدم من أن يكونوا نشطين في نفس الوقت.
+            </div>
+
             <form wire:submit.prevent="{{ $editingUser ? 'updateUser' : 'addUser' }}" class="space-y-4 text-sm">
                 @if(session('error'))
                     <div class="bg-red-100 border border-red-300 text-red-700 text-xs px-4 py-2 rounded-md">
@@ -45,8 +50,8 @@
                     </div>
                 @endif
                 @php
-                    $fieldClass = 'w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none bg-white text-xs peer';
-                    $labelClass = 'absolute right-3 -top-2.5 px-1 bg-white text-xs text-gray-500 transition-all peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-emerald-600';
+                    $fieldClass = 'w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-[rgb(var(--primary-500))] focus:border-[rgb(var(--primary-500))] focus:outline-none bg-white text-xs peer';
+                    $labelClass = 'absolute right-3 -top-2.5 px-1 bg-white text-xs text-gray-500 transition-all peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-[rgb(var(--primary-600))]';
                     $containerClass = 'relative mt-1';
                 @endphp
 
@@ -97,7 +102,7 @@
                 <!-- الحالة -->
                 <div class="flex items-center mt-4">
                     <input wire:model="is_active" type="checkbox" id="is_active" 
-                        class="h-4 w-4 rounded border-gray-300 focus:ring-emerald-500 accent-[#10B981] checked:text-white bg-[#10B981] text-white">
+                        class="h-4 w-4 rounded border-gray-300 focus:ring-[rgb(var(--primary-500))] accent-[rgb(var(--primary-500))] checked:text-white bg-[rgb(var(--primary-500))] text-white">
                     <label for="is_active" class="mr-2 text-xs text-gray-700">نشط</label>
                 </div>
 
@@ -108,8 +113,8 @@
                         إلغاء
                     </button>
                     <button type="submit"
-                            class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 
-                                  text-white font-bold px-4 py-2 rounded-xl shadow-md hover:shadow-xl transition duration-300 text-sm">
+                            class="text-white font-bold px-4 py-2 rounded-xl shadow-md transition duration-300 text-sm"
+                            style="background: linear-gradient(to right, rgb(var(--primary-500)) 0%, rgb(var(--primary-600)) 100%);">
                         {{ $editingUser ? 'تحديث' : 'إضافة' }}
                     </button>
                 </div>
@@ -138,8 +143,9 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-2 py-1">
                                 <div class="flex items-center">
-                                    <div class="h-8 w-8 bg-emerald-100 rounded-full flex items-center justify-center mr-2">
-                                        <span class="text-emerald-600 font-semibold text-xs">{{ substr($user->name, 0, 1) }}</span>
+                                    <div class="h-8 w-8 rounded-full flex items-center justify-center mr-2"
+                                        style="background: linear-gradient(to right, rgba(var(--primary-500), 0.1), rgba(var(--primary-600), 0.2));">
+                                        <span class="font-semibold text-xs" style="color: rgb(var(--primary-500));">{{ substr($user->name, 0, 1) }}</span>
                                     </div>
                                     <div class="text-xs font-medium">{{ $user->name }}</div>
                                 </div>
@@ -163,11 +169,13 @@
                                 @endif
                             </td>
                             <td class="px-2 py-1">
-                                <button wire:click="toggleUserStatus({{ $user->id }})" 
-                                        class="inline-flex px-1.5 py-0.5 text-2xs font-semibold rounded-full 
-                                        {{ $user->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                    {{ $user->is_active ? 'نشط' : 'غير نشط' }}
-                                </button>
+                            <button wire:click="toggleUserStatus({{ $user->id }})"
+                                    class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
+                                    style="{{ $user->is_active 
+                                        ? 'background-color: rgba(var(--primary-500), 0.1); color: rgb(var(--primary-500));' 
+                                        : 'background-color: rgba(239, 68, 68, 0.1); color: rgb(239, 68, 68);' }}">
+                                {{ $user->is_active ? 'نشط' : 'غير نشط' }}
+                            </button>
                             </td>
                             <td class="px-2 py-1 whitespace-nowrap">
                                 <span class="text-xs">{{ $user->created_at->format('Y-m-d') }}</span>
@@ -175,7 +183,7 @@
                             <td class="px-2 py-1 whitespace-nowrap">
                                 <div class="flex gap-2">
                                     <button wire:click="editUser({{ $user->id }})"
-                                            class="text-emerald-600 hover:text-emerald-800 font-medium text-xs">
+                                            class="font-medium text-xs" style="color: rgb(var(--primary-600)); hover:color: rgb(var(--primary-800));">
                                         تعديل
                                     </button>
                                     <button wire:click="deleteUser({{ $user->id }})"
@@ -211,7 +219,8 @@
              x-init="setTimeout(() => show = false, 2000)"
              x-show="show"
              x-transition
-             class="fixed bottom-4 right-4 bg-emerald-500 text-white px-4 py-2 rounded-md shadow text-sm">
+             class="fixed bottom-4 right-4 text-white px-4 py-2 rounded-md shadow text-sm" 
+             style="background-color: rgb(var(--primary-500));">
             {{ session('message') }}
         </div>
     @endif
@@ -227,7 +236,28 @@
         .peer:focus + label {
             top: -0.5rem;
             font-size: 0.75rem;
-            color: #059669;
+            color: rgb(var(--primary-600));
         }
+
+        /* تأثير hover لزر "إضافة مستخدم جديد" */
+        button[wire\:click="\$set('showAddForm', true)"]:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(var(--primary-500), 0.2);
+        }
+
+        button[wire\:click="\$set('showAddForm', true)"]:active {
+            transform: translateY(0);
+        }
+        
+        /* تأثير زر الحفظ في النافذة المنبثقة */
+        form button[type="submit"]:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(var(--primary-500), 0.2);
+        }
+
+        form button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
     </style>
 </div>

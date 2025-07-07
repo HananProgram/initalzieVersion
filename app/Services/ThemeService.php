@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Services;
+use App\Models\SystemSetting;
 
 class ThemeService
 {
     public static function getThemeColors()
     {
-         return [
+   return [
         'emerald' => [
             'primary-100' => '209, 250, 229',
             'primary-500' => '16, 185, 129',
@@ -17,17 +18,7 @@ class ThemeService
             'primary-500' => '59, 130, 246',
             'primary-600' => '37, 99, 235',
         ],
-        
-        'light-blue' => [
-            'primary-100' => '120, 157, 188',
-            'primary-500' => '56, 116, 120',
-            'primary-600' => '41, 95, 152',
-        ],
-        'orange' => [
-            'primary-100' => '232, 184, 109',
-            'primary-500' => '255, 131, 67',
-            'primary-600' => '181, 193, 142',
-        ],
+
         'brown' => [
             'primary-100' => '145, 79, 30',
             'primary-500' => '145, 79, 30',
@@ -38,6 +29,46 @@ class ThemeService
             'primary-500' => '46, 139, 87',  
             'primary-600' => '38, 119, 74', 
         ],
+
+        'mediumblue' => [
+            'primary-100' => '128, 179, 255',
+            'primary-500' => '128, 179, 255',
+            'primary-600' => '128, 179, 255',
+        ],
+        'goldenorange' => [
+            'primary-100' => '255, 187, 92',
+            'primary-500' => '255, 187, 92',
+            'primary-600' => '255, 187, 92',
+        ],
+        'softgreen' => [
+            'primary-100' => '147, 177, 166',
+            'primary-500' => '147, 177, 166',
+            'primary-600' => '147, 177, 166',
+        ],
+        'turquoise' => [
+            'primary-100' => '34, 166, 153',
+            'primary-500' => '34, 166, 153',
+            'primary-600' => '34, 166, 153',
+        ],
+        'steelblue' => [
+            'primary-100' => '70, 130, 169',
+            'primary-500' => '70, 130, 169',
+            'primary-600' => '70, 130, 169',
+        ],
+
+        'charcoal' => [
+            'primary-100' => '220, 220, 220',
+            'primary-500' => '80, 80, 80',
+            'primary-600' => '50, 50, 50',
+        ],
+
+        'peachorange' => [
+            'primary-100' => '243, 162, 109',
+            'primary-500' => '243, 162, 109',
+            'primary-600' => '243, 162, 109',
+        ],
+
+
         'sandstone' => [
             'primary-100' => '233, 229, 219',  
             'primary-500' => '160, 147, 125',  
@@ -70,12 +101,6 @@ class ThemeService
             'primary-600' => '56, 24, 16',
         ],
 
-        'golden' => [
-            'primary-100' => '255, 248, 220',
-            'primary-500' => '246, 215, 118',  
-            'primary-600' => '218, 180, 80',
-        ],
-
     ];
     }
 
@@ -89,4 +114,19 @@ class ThemeService
         $colors = self::getThemeColors();
         return $colors[$themeName] ?? $colors['emerald'];
     }
+
+
+public static function getSystemTheme()
+{
+    try {
+        $setting = SystemSetting::first();
+        if ($setting && in_array($setting->theme_color, self::getAvailableThemes())) {
+            return $setting->theme_color;
+        }
+        return 'emerald'; // القيمة الافتراضية
+    } catch (\Exception $e) {
+        Log::error('Error getting system theme: ' . $e->getMessage());
+        return 'emerald';
+    }
+}
 }

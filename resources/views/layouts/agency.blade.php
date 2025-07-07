@@ -372,6 +372,18 @@
                     <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">سجل التعديلات</a>
                 </div>
             </div>
+
+            <div class="nav-item flex items-center px-2 py-1 rounded-full {{ request()->routeIs('agency.dynamic-lists') ? 'active' : '' }}">
+    <a href="{{ route('agency.dynamic-lists') }}" class="flex items-center">
+        <span class="nav-icon">
+            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </span>
+        <span class="nav-text text-xs text-white whitespace-nowrap mr-2">قوائم</span>
+    </a>
+</div>
+
         </div>
 
         <!-- Theme Selector -->

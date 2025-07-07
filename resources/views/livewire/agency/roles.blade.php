@@ -1,10 +1,12 @@
 <div class="space-y-6">
     <!-- العنوان الرئيسي -->
     <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold text-emerald-700 border-b-2 border-emerald-200 pb-2">إدارة الأدوار</h2>
+        <h2 class="text-2xl font-bold" style="color: rgb(var(--primary-700)); border-bottom: 2px solid rgba(var(--primary-200), 0.5); padding-bottom: 0.5rem;">
+            إدارة الأدوار
+        </h2>
         <button wire:click="$set('showAddForm', true)" 
-                class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 
-                       text-white font-bold px-4 py-2 rounded-xl shadow-md hover:shadow-xl transition duration-300 text-sm">
+                class="text-white font-bold px-4 py-2 rounded-xl shadow-md transition duration-300 text-sm"
+                style="background: linear-gradient(to right, rgb(var(--primary-500)) 0%, rgb(var(--primary-600)) 100%);">
             + إضافة دور جديد
         </button>
     </div>
@@ -14,7 +16,7 @@
         <div class="relative mt-1">
             <input wire:model.live="search" 
                    type="text" 
-                   class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none bg-white text-xs"
+                   class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-[rgb(var(--primary-500))] focus:border-[rgb(var(--primary-500))] focus:outline-none bg-white text-xs"
                    placeholder=" ">
             <label class="absolute right-3 -top-2.5 px-1 bg-white text-xs text-gray-500">
                 بحث في الأدوار
@@ -31,14 +33,14 @@
                 &times;
             </button>
 
-            <h3 class="text-xl font-bold text-emerald-700 mb-4 text-center">
+            <h3 class="text-xl font-bold mb-4 text-center" style="color: rgb(var(--primary-700));">
                 {{ $editingRole ? 'تعديل الدور' : 'إضافة دور جديد' }}
             </h3>
 
             <form wire:submit.prevent="{{ $editingRole ? 'updateRole' : 'addRole' }}" class="space-y-4 text-sm">
                 @php
-                    $fieldClass = 'w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none bg-white text-xs peer';
-                    $labelClass = 'absolute right-3 -top-2.5 px-1 bg-white text-xs text-gray-500 transition-all peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-emerald-600';
+                    $fieldClass = 'w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-[rgb(var(--primary-500))] focus:border-[rgb(var(--primary-500))] focus:outline-none bg-white text-xs peer';
+                    $labelClass = 'absolute right-3 -top-2.5 px-1 bg-white text-xs text-gray-500 transition-all peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-[rgb(var(--primary-600))]';
                     $containerClass = 'relative mt-1';
                 @endphp
 
@@ -73,7 +75,7 @@
                                        type="checkbox" 
                                        value="{{ $permission }}" 
                                        id="perm_{{ $permission }}"
-                                       class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded">
+                                       class="h-4 w-4 rounded border-gray-300 focus:ring-[rgb(var(--primary-500))] accent-[rgb(var(--primary-500))] checked:text-white bg-[rgb(var(--primary-500))] text-white">
                                 <label for="perm_{{ $permission }}" class="mr-2 text-xs text-gray-700">{{ $label }}</label>
                             </div>
                         @endforeach
@@ -88,8 +90,8 @@
                         إلغاء
                     </button>
                     <button type="submit"
-                            class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 
-                                  text-white font-bold px-4 py-2 rounded-xl shadow-md hover:shadow-xl transition duration-300 text-sm">
+                            class="text-white font-bold px-4 py-2 rounded-xl shadow-md transition duration-300 text-sm"
+                            style="background: linear-gradient(to right, rgb(var(--primary-500)) 0%, rgb(var(--primary-600)) 100%);">
                         {{ $editingRole ? 'تحديث' : 'إضافة' }}
                     </button>
                 </div>
@@ -117,8 +119,9 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-2 py-1">
                                 <div class="flex items-center">
-                                    <div class="h-8 w-8 bg-purple-100 rounded-full flex items-center justify-center mr-2">
-                                        <svg class="h-4 w-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="h-8 w-8 rounded-full flex items-center justify-center mr-2"
+                                        style="background: linear-gradient(to right, rgba(var(--primary-500), 0.1), rgba(var(--primary-600), 0.2));">
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: rgb(var(--primary-500));">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                                         </svg>
                                     </div>
@@ -142,7 +145,8 @@
                                         }
                                     @endphp
                                     @foreach(array_slice($permissions, 0, 3) as $permission)
-                                        <span class="inline-flex px-1.5 py-0.5 text-2xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        <span class="inline-flex px-1.5 py-0.5 text-2xs font-semibold rounded-full"
+                                              style="background-color: rgba(var(--primary-100), 0.5); color: rgb(var(--primary-700)); border: 1px solid rgba(var(--primary-200), 0.5);">
                                             {{ $availablePermissions[$permission] ?? $permission }}
                                         </span>
                                     @endforeach
@@ -162,7 +166,7 @@
                             <td class="px-2 py-1 whitespace-nowrap">
                                 <div class="flex gap-2">
                                     <button wire:click="editRole({{ $role->id }})"
-                                            class="text-emerald-600 hover:text-emerald-800 font-medium text-xs">
+                                            class="font-medium text-xs" style="color: rgb(var(--primary-600)); hover:color: rgb(var(--primary-800));">
                                         تعديل
                                     </button>
                                     <button wire:click="deleteRole({{ $role->id }})"
@@ -192,13 +196,14 @@
         @endif
     </div>
 
-    <!-- رسالة النجاح -->
+    <!-- رسائل النظام -->
     @if(session()->has('message'))
         <div x-data="{ show: true }"
              x-init="setTimeout(() => show = false, 2000)"
              x-show="show"
              x-transition
-             class="fixed bottom-4 right-4 bg-emerald-500 text-white px-4 py-2 rounded-md shadow text-sm">
+             class="fixed bottom-4 right-4 text-white px-4 py-2 rounded-md shadow text-sm" 
+             style="background-color: rgb(var(--primary-500));">
             {{ session('message') }}
         </div>
     @endif
@@ -214,7 +219,27 @@
         .peer:focus + label {
             top: -0.5rem;
             font-size: 0.75rem;
-            color: #059669;
+            color: rgb(var(--primary-600));
+        }
+
+        /* تأثير hover لزر "إضافة دور جديد" */
+        button[wire\:click="\$set('showAddForm', true)"]:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(var(--primary-500), 0.2);
+        }
+
+        button[wire\:click="\$set('showAddForm', true)"]:active {
+            transform: translateY(0);
+        }
+        
+        /* تأثير زر الحفظ في النافذة المنبثقة */
+        form button[type="submit"]:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(var(--primary-500), 0.2);
+        }
+
+        form button[type="submit"]:active {
+            transform: translateY(0);
         }
     </style>
 </div>

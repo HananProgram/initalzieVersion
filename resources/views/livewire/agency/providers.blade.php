@@ -1,10 +1,12 @@
 <div class="space-y-6">
     <!-- العنوان والرسائل -->
     <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold text-emerald-700 border-b-2 border-emerald-200 pb-2">إدارة المزودين</h2>
+        <h2 class="text-2xl font-bold" style="color: rgb(var(--primary-700)); border-bottom: 2px solid rgba(var(--primary-200), 0.5); padding-bottom: 0.5rem;">
+            إدارة المزودين
+        </h2>
         
         @if(session('message'))
-            <div class="bg-emerald-100 text-emerald-700 rounded-md px-4 py-2 text-center shadow">
+            <div class="bg-white rounded-md px-4 py-2 text-center shadow text-sm" style="color: rgb(var(--primary-700)); border: 1px solid rgba(var(--primary-200), 0.5);">
                 {{ session('message') }}
             </div>
         @endif
@@ -13,11 +15,11 @@
     <!-- نموذج الإضافة المدمج -->
     <div class="bg-white rounded-xl shadow-md p-4">
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold text-emerald-700">قائمة المزودين</h2>
+            <h2 class="text-xl font-bold" style="color: rgb(var(--primary-700));">قائمة المزودين</h2>
             
             <button wire:click="showAddModal"
-                    class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 
-                        text-white font-bold px-4 py-2 rounded-xl shadow-md hover:shadow-xl transition duration-300 text-sm">
+                    class="text-white font-bold px-4 py-2 rounded-xl shadow-md transition duration-300 text-sm"
+                    style="background: linear-gradient(to right, rgb(var(--primary-500)) 0%, rgb(var(--primary-600)) 100%);">
                 + إضافة مزود جديد
             </button>
         </div>
@@ -39,11 +41,20 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-2 py-1 whitespace-nowrap">{{ $loop->iteration }}</td>
                             <td class="px-2 py-1 font-medium">{{ $provider->name }}</td>
-                            <td class="px-2 py-1">{{ $provider->type ?? '-' }}</td>
+                            <td class="px-2 py-1">
+                                @if($provider->type)
+                                    <span class="inline-flex px-1.5 py-0.5 text-2xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        {{ $provider->type }}
+                                    </span>
+                                @else
+                                    -
+                                @endif
+                            </td>
                             <td class="px-2 py-1 text-xs whitespace-pre-line">{{ $provider->contact_info ?? '-' }}</td>
                             <td class="px-2 py-1 whitespace-nowrap">
                                 <button wire:click="showEditModal({{ $provider->id }})"
-                                        class="text-emerald-600 hover:text-emerald-800 font-medium text-xs mx-1">
+                                        class="font-medium text-xs mx-1"
+                                        style="color: rgb(var(--primary-600)); hover:color: rgb(var(--primary-800));">
                                     تعديل
                                 </button>
                             </td>
@@ -67,14 +78,14 @@
                     &times;
                 </button>
 
-                <h3 class="text-xl font-bold text-emerald-700 mb-4 text-center">
+                <h3 class="text-xl font-bold mb-4 text-center" style="color: rgb(var(--primary-700));">
                     {{ $editMode ? 'تعديل المزود' : 'إضافة مزود جديد' }}
                 </h3>
 
                 <form wire:submit.prevent="saveProvider" class="space-y-4 text-sm">
                     @php
-                        $fieldClass = 'w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none bg-white text-xs peer';
-                        $labelClass = 'absolute right-3 -top-2.5 px-1 bg-white text-xs text-gray-500 transition-all peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-emerald-600';
+                        $fieldClass = 'w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-[rgb(var(--primary-500))] focus:border-[rgb(var(--primary-500))] focus:outline-none bg-white text-xs peer';
+                        $labelClass = 'absolute right-3 -top-2.5 px-1 bg-white text-xs text-gray-500 transition-all peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-[rgb(var(--primary-600))]';
                         $containerClass = 'relative mt-1';
                     @endphp
 
@@ -105,13 +116,25 @@
                             إلغاء
                         </button>
                         <button type="submit"
-                                class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 
-                                    text-white font-bold px-4 py-2 rounded-xl shadow-md hover:shadow-xl transition duration-300 text-sm">
+                                class="text-white font-bold px-4 py-2 rounded-xl shadow-md transition duration-300 text-sm"
+                                style="background: linear-gradient(to right, rgb(var(--primary-500)) 0%, rgb(var(--primary-600)) 100%);">
                             {{ $editMode ? 'تحديث' : 'إضافة' }}
                         </button>
                     </div>
                 </form>
             </div>
+        </div>
+    @endif
+
+    <!-- رسائل النظام العائمة -->
+    @if(session()->has('message'))
+        <div x-data="{ show: true }"
+             x-init="setTimeout(() => show = false, 2000)"
+             x-show="show"
+             x-transition
+             class="fixed bottom-4 right-4 text-white px-4 py-2 rounded-md shadow text-sm" 
+             style="background-color: rgb(var(--primary-500));">
+            {{ session('message') }}
         </div>
     @endif
 
@@ -126,7 +149,7 @@
         .peer:focus + label {
             top: -0.5rem;
             font-size: 0.75rem;
-            color: #059669;
+            color: rgb(var(--primary-600));
         }
         
         select:required:invalid {
@@ -135,6 +158,18 @@
         
         select option {
             color: #111827;
+        }
+
+        /* تأثير hover للأزرار */
+        button[wire\:click="showAddModal"]:hover,
+        button[type="submit"]:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(var(--primary-500), 0.2);
+        }
+
+        button[wire\:click="showAddModal"]:active,
+        button[type="submit"]:active {
+            transform: translateY(0);
         }
     </style>
 </div>
