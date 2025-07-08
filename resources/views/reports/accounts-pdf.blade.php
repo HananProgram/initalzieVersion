@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>تقرير المبيعات - {{ now()->format('Y-m-d') }}</title>
+    <title>تقرير الحسابات - {{ now()->format('Y-m-d') }}</title>
     <style>
         @font-face {
             font-family: 'Tahoma';
@@ -63,7 +63,7 @@
         }
         
         th {
-            background-color: #f0fdf4;
+            background-color: rgba({{ $colors['primary-100'] }}, 0.2);
             color: rgb({{ $colors['primary-600'] }});
             padding: 8px 5px;
             border: 1px solid rgb({{ $colors['primary-100'] }});
@@ -141,7 +141,6 @@
 </head>
 <body>
     <div class="header">
-        <!-- يمكنك استبدال هذا بمحتوى صورة الشعار الفعلي -->
         <div class="logo">
             <svg width="200" height="50" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
                 <rect x="10" y="10" width="180" height="30" rx="5" fill="rgb({{ $colors['primary-500'] }})" opacity="0.2"/>
@@ -150,7 +149,7 @@
                 </text>
             </svg>
         </div>
-        <h1>تقرير المبيعات</h1>
+        <h1>تقرير الحسابات</h1>
         <div>فترة التقرير: {{ $startDate ?? 'بداية النشاط' }} إلى {{ $endDate ?? now()->format('Y-m-d') }}</div>
     </div>
     
@@ -174,11 +173,10 @@
         </div>
     </div>
     
-<table>
+    <table>
         <thead>
             <tr>
                 @foreach($fields as $field)
-                    @if($field == 'user')<th width="10%">الموظف</th>@endif
                     @if($field == 'sale_date')<th width="8%">التاريخ</th>@endif
                     @if($field == 'beneficiary_name')<th width="12%">المستفيد</th>@endif
                     @if($field == 'customer')<th width="10%">العميل</th>@endif
@@ -200,7 +198,6 @@
             @foreach($sales as $sale)
                 <tr>
                     @foreach($fields as $field)
-                        @if($field == 'user')<td>{{ $sale->user->name ?? '-' }}</td>@endif
                         @if($field == 'sale_date')<td>{{ $sale->sale_date }}</td>@endif
                         @if($field == 'beneficiary_name')<td>{{ $sale->beneficiary_name }}</td>@endif
                         @if($field == 'customer')<td>{{ $sale->customer->name ?? '-' }}</td>@endif
@@ -222,7 +219,7 @@
     </table>
     
     <div class="footer">
-        <div>تم إنشاء هذا التقرير تلقائياً بواسطة نظام إدارة المبيعات</div>
+        <div>تم إنشاء هذا التقرير تلقائياً بواسطة نظام إدارة الحسابات</div>
         <div>صفحة <span class="page-number"></span> من <span class="page-count"></span></div>
     </div>
 </body>

@@ -18,7 +18,8 @@ class DynamicListItemSub extends Model
     protected $fillable = [
         'dynamic_list_item_id', // معرف البند الرئيسي
         'label',               // نص البند الفرعي
-
+        'agency_id',
+        'created_by',
     ];
 
     /**

@@ -42,4 +42,8 @@ class Sale extends Model
     {
         return $this->belongsTo(Account::class);
     }
+
+
+
+
 }

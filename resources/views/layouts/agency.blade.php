@@ -343,6 +343,18 @@
                     </div>
                 </div>
             </div>
+            <!-- إضافة حساب -->
+            <div class="relative group nav-item flex items-center px-2 py-1 rounded-full {{ request()->routeIs('agency.accounts') ? 'active' : '' }}">
+                <a href="{{ route('agency.accounts') }}" class="flex items-center">
+                    <span class="nav-icon">
+                        <!-- أيقونة المحفظة (Wallet Icon) -->
+                        <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-2m4-3h-6m6 0a2 2 0 01-2 2h-4a2 2 0 010-4h4a2 2 0 012 2z" />
+                        </svg>
+                    </span>
+                    <span class="nav-text text-xs text-white whitespace-nowrap mr-2">الحسابات</span>
+                </a>
+            </div>
             <!-- ملف الوكالة -->
             <div class="relative group nav-item flex items-center px-2 py-1 rounded-full {{ request()->routeIs('agency.profile') ? 'active' : '' }}">
                 <a href="{{ route('agency.profile') }}" class="flex items-center">

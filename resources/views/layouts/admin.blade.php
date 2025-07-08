@@ -191,7 +191,9 @@
         @if(auth()->user()->isSuperAdmin())
             <div class="relative group-theme-selector">
                 <!-- زر الثيم -->
-                <button class="flex items-center justify-center h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 transition focus:outline-none">
+                <button class="flex items-center  gap-3 sm:gap-15 justify-center h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 transition focus:outline-none">
+                  
+
                     <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2m-4-4V5m0 4h4m-4 0H3"/>
                     </svg>

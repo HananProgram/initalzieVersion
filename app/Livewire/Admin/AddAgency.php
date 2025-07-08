@@ -36,6 +36,7 @@ class AddAgency extends Component
     public $admin_password;
 
     public $successMessage;
+    public $max_users = 3;
 
     protected function rules()
     {
@@ -54,7 +55,7 @@ class AddAgency extends Component
             'description' => 'nullable|string',
             'currency' => 'required|string|max:10',
             'main_branch_name' => 'required|string|max:255',
-
+            'max_users' => 'required|integer|min:1|max:100',
             'admin_name' => 'required|string|max:255',
             'admin_email' => ['required','email','unique:users,email'],
             'admin_password' => 'required|string|min:6',
@@ -82,7 +83,7 @@ class AddAgency extends Component
                 'main_branch_name' => $this->main_branch_name,
                 'status' => $this->status,
                 'logo' => null,
-
+                'max_users' => $this->max_users,
                 // ✅ تواريخ الاشتراك
                 'subscription_start_date' => $this->subscription_start_date,
                 'subscription_end_date' => $this->subscription_end_date,

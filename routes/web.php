@@ -22,6 +22,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\SystemSettingsController;
+use App\Livewire\Agency\Accounts;
 // الصفحة الرئيسية
 Route::get('/', function () {
     return view('welcome');
@@ -87,7 +88,9 @@ Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
         Route::get('/sales', Index::class)->name('sales.index');
         Route::get('/sales/create', Create::class)->name('sales.create');
         Route::get('/customers/add', AddCustomer::class)->name('agency.customers.add');
-        Route::get('/providers', \App\Livewire\Agency\Providers::class)->name('agency.providers');
+        Route::get('/providers', \App\Livewire\Agency\Providers::class)->name('agency.accounting');
+         Route::get('/accounts', Accounts::class)->name('agency.accounts');
+         Route::get('/accounting', \App\Livewire\Agency\Providers::class)->name('agency.providers');
         Route::get('/dynamic-lists', \App\Livewire\Agency\DynamicLists::class)->name('agency.dynamic-lists');
         Route::get('/sales/report/pdf', [\App\Http\Controllers\Agency\ReportController::class, 'salesPdf'])
             ->name('agency.sales.report.pdf');
@@ -104,7 +107,17 @@ Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
                 );
             })->name('agency.sales.report.excel');
         });
+
+
    
+});
+
+Route::prefix('agency/accounts')->group(function () {
+    Route::get('/report/pdf', [\App\Http\Controllers\Agency\AccountController::class, 'generatePdfReport'])
+        ->name('agency.accounts.report.pdf');
+        
+    Route::get('/report/excel', [\App\Http\Controllers\Agency\AccountController::class, 'generateExcelReport'])
+        ->name('agency.accounts.report.excel');
 });
 
 // ==================== تسجيل الخروج ====================

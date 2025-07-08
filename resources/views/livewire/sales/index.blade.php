@@ -112,23 +112,23 @@
 
             <!-- الصف الثالث -->
             <div class="grid md:grid-cols-4 gap-3">
-                <div class="{{ $containerClass }}">
-                    <input type="number" wire:model="usd_buy" step="0.01" class="{{ $fieldClass }}" placeholder="USD Buy" />
-                    <label class="{{ $labelClass }}">USD Buy</label>
-                    @error('usd_buy') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
-                </div>
+            <div class="{{ $containerClass }}">
+                <input type="number" wire:model="usd_buy" wire:change="calculateProfit" step="0.01" class="{{ $fieldClass }}" placeholder="USD Buy" />
+                <label class="{{ $labelClass }}">USD Buy</label>
+                @error('usd_buy') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+            </div>
 
-                <div class="{{ $containerClass }}">
-                    <input type="number" wire:model="usd_sell" step="0.01" class="{{ $fieldClass }}" placeholder="USD Sell" />
-                    <label class="{{ $labelClass }}">USD Sell</label>
-                    @error('usd_sell') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
-                </div>
+            <div class="{{ $containerClass }}">
+                <input type="number" wire:model="usd_sell" wire:change="calculateProfit" step="0.01" class="{{ $fieldClass }}" placeholder="USD Sell" />
+                <label class="{{ $labelClass }}">USD Sell</label>
+                @error('usd_sell') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+            </div>
 
-                <div class="{{ $containerClass }}">
-                    <input type="number" wire:model="sale_profit" step="0.01" class="{{ $fieldClass }}" placeholder="الربح" />
-                    <label class="{{ $labelClass }}">الربح</label>
-                    @error('sale_profit') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
-                </div>
+            <div class="{{ $containerClass }}">
+                <input type="number" wire:model="sale_profit" step="0.01" class="{{ $fieldClass }}" placeholder="الربح" readonly />
+                <label class="{{ $labelClass }}">الربح</label>
+                @error('sale_profit') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+            </div>
 
                 <div class="{{ $containerClass }}">
                     <input type="number" wire:model="amount_received" class="{{ $fieldClass }}" step="0.01" placeholder="المبلغ المدفوع" />

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations to create the dynamic_list_item_subs table.
      *
@@ -28,6 +27,14 @@ return new class extends Migration
             // Content Field
             $table->string('label')
                 ->comment('Display text for the sub-item');
+
+            $table->unsignedBigInteger('agency_id')
+                ->nullable()
+                ->comment('Agency that owns this sub-item');
+
+            $table->string('created_by')
+                ->nullable()
+                ->comment("Creator type: 'agency', 'system', etc.");
 
             // Ordering Field
             $table->unsignedSmallInteger('order')

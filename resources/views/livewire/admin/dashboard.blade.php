@@ -17,7 +17,7 @@
         <!-- Total Agencies -->
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center">
-                <div class="p-3 rounded-full" style="background-color: rgba({{ $colors['primary-100'] }}, 1); color: rgb({{ $colors['primary-600'] }})">
+                <div class="p-3 rounded-full" style="background-color: rgba({{ $colors['primary-500'] }}, 0.1); color: rgb({{ $colors['primary-500'] }})">
                     <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
@@ -33,7 +33,7 @@
         <!-- Active Agencies -->
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center">
-                <div class="p-3 rounded-full" style="background-color: rgba({{ $colors['primary-100'] }}, 1); color: rgb({{ $colors['primary-600'] }})">
+                <div class="p-3 rounded-full" style="background-color: rgba({{ $colors['primary-500'] }}, 0.1); color: rgb({{ $colors['primary-500'] }})">
                     <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -49,7 +49,7 @@
         <!-- Pending Agencies -->
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center">
-                <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                <div class="p-3 rounded-full" style="background-color: rgba(234, 179, 8, 0.1); color: rgb(234, 179, 8)">
                     <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -65,7 +65,7 @@
         <!-- Agency Admins -->
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center">
-                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                <div class="p-3 rounded-full" style="background-color: rgba(59, 130, 246, 0.1); color: rgb(59, 130, 246)">
                     <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -85,7 +85,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <a href="{{ route('admin.add-agency') }}"
                class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-emerald-300 transition duration-200">
-                <div class="p-2 rounded-full" style="background-color: rgba({{ $colors['primary-100'] }}, 1); color: rgb({{ $colors['primary-500'] }})">
+                <div class="p-2 rounded-full" style="background-color: rgba({{ $colors['primary-500'] }}, 0.1); color: rgb({{ $colors['primary-500'] }})">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -99,7 +99,7 @@
 
             <a href="{{ route('admin.agencies') }}"
                class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-emerald-300 transition duration-200">
-                <div class="p-2 rounded-full bg-blue-100 text-blue-600 mr-4">
+                <div class="p-2 rounded-full" style="background-color: rgba({{ $colors['primary-500'] }}, 0.1); color: rgb({{ $colors['primary-500'] }})">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
@@ -150,11 +150,11 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($agency->status === 'active')
                                     <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
-                                          style="background-color: rgba({{ $colors['primary-100'] }}, 0.5); color: rgb({{ $colors['primary-500'] }});">
+                                          style="background-color: rgba({{ $colors['primary-500'] }}, 0.1); color: rgb({{ $colors['primary-500'] }});">
                                         نشطة
                                     </span>
                                 @else
-                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full" style="background-color: rgba(234, 179, 8, 0.1); color: rgb(234, 179, 8);">
                                         معلقة
                                     </span>
                                 @endif
