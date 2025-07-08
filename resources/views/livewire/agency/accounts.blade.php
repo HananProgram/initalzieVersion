@@ -10,10 +10,7 @@ $containerClass = 'relative mt-1';
 
 
 <div class="space-y-6">
-    <!-- مؤشر التحميل -->
-    <div wire:loading class="fixed top-0 left-0 right-0 bg-blue-500 text-white p-2 text-center z-50">
-        جاري التحميل...
-    </div>
+
 
    <div class="flex justify-between items-center">
     <h2 class="text-2xl font-bold" style="color: rgb(var(--primary-700)); border-bottom: 2px solid rgba(var(--primary-200), 0.5); padding-bottom: 0.5rem;">
@@ -35,59 +32,66 @@ $containerClass = 'relative mt-1';
     <div class="bg-white rounded-xl shadow-md p-4">
         <div class="grid md:grid-cols-4 gap-4">
             <div class="{{ $containerClass }}">
-                <input type="text" wire:model.debounce.500ms="search" class="{{ $fieldClass }}" placeholder="ابحث في جميع الحقول...">
+            <input type="text" wire:model.live.debounce.500ms="search" class="{{ $fieldClass }}" placeholder="ابحث في جميع الحقول...">
                 <label class="{{ $labelClass }}">بحث عام</label>
             </div>
 
-            <div class="{{ $containerClass }}">
-                <select wire:model="serviceTypeFilter" class="{{ $fieldClass }}">
-                    <option value="">جميع أنواع الخدمات</option>
-                    @foreach($serviceTypes as $type)
-                        <option value="{{ $type->id }}">{{ $type->name }}</option>
-                    @endforeach
-                </select>
-                <label class="{{ $labelClass }}">نوع الخدمة</label>
-            </div>
+            <!-- نوع الخدمة -->
+<div class="{{ $containerClass }}">
+    <select wire:model.live="serviceTypeFilter" class="{{ $fieldClass }}">
+        <option value="">جميع أنواع الخدمات</option>
+        @foreach($serviceTypes as $type)
+            <option value="{{ $type->id }}">{{ $type->name }}</option>
+        @endforeach
+    </select>
+    <label class="{{ $labelClass }}">نوع الخدمة</label>
+</div>
 
-            <div class="{{ $containerClass }}">
-                <select wire:model="providerFilter" class="{{ $fieldClass }}">
-                    <option value="">جميع المزودين</option>
-                    @foreach($providers as $provider)
-                        <option value="{{ $provider->id }}">{{ $provider->name }}</option>
-                    @endforeach
-                </select>
-                <label class="{{ $labelClass }}">المزود</label>
-            </div>
+<!-- المزود -->
+<div class="{{ $containerClass }}">
+    <select wire:model.live="providerFilter" class="{{ $fieldClass }}">
+        <option value="">جميع المزودين</option>
+        @foreach($providers as $provider)
+            <option value="{{ $provider->id }}">{{ $provider->name }}</option>
+        @endforeach
+    </select>
+    <label class="{{ $labelClass }}">المزود</label>
+</div>
 
-            <div class="{{ $containerClass }}">
-                <select wire:model="accountFilter" class="{{ $fieldClass }}">
-                    <option value="">جميع الحسابات</option>
-                    @foreach($accounts as $account)
-                        <option value="{{ $account->id }}">{{ $account->name }}</option>
-                    @endforeach
-                </select>
-                <label class="{{ $labelClass }}">الحساب</label>
-            </div>
+<!-- الحساب -->
+<div class="{{ $containerClass }}">
+    <select wire:model.live="accountFilter" class="{{ $fieldClass }}">
+        <option value="">جميع الحسابات</option>
+        @foreach($accounts as $account)
+            <option value="{{ $account->id }}">{{ $account->name }}</option>
+        @endforeach
+    </select>
+    <label class="{{ $labelClass }}">الحساب</label>
+</div>
 
-            <div class="{{ $containerClass }}">
-                <input type="date" wire:model="startDate" class="{{ $fieldClass }}" placeholder="من تاريخ">
-                <label class="{{ $labelClass }}">من تاريخ</label>
-            </div>
+<!-- من تاريخ -->
+<div class="{{ $containerClass }}">
+    <input type="date" wire:model.live="startDate" class="{{ $fieldClass }}" placeholder="من تاريخ">
+    <label class="{{ $labelClass }}">من تاريخ</label>
+</div>
 
-            <div class="{{ $containerClass }}">
-                <input type="date" wire:model="endDate" class="{{ $fieldClass }}" placeholder="إلى تاريخ">
-                <label class="{{ $labelClass }}">إلى تاريخ</label>
-            </div>
+<!-- إلى تاريخ -->
+<div class="{{ $containerClass }}">
+    <input type="date" wire:model.live="endDate" class="{{ $fieldClass }}" placeholder="إلى تاريخ">
+    <label class="{{ $labelClass }}">إلى تاريخ</label>
+</div>
 
-            <div class="{{ $containerClass }}">
-                <input type="text" wire:model="pnrFilter" class="{{ $fieldClass }}" placeholder="بحث بـ PNR">
-                <label class="{{ $labelClass }}">PNR</label>
-            </div>
+<!-- PNR -->
+<div class="{{ $containerClass }}">
+    <input type="text" wire:model.live.debounce.500ms="pnrFilter" class="{{ $fieldClass }}" placeholder="بحث بـ PNR">
+    <label class="{{ $labelClass }}">PNR</label>
+</div>
 
-            <div class="{{ $containerClass }}">
-                <input type="text" wire:model.debounce.500ms="referenceFilter" class="{{ $fieldClass }}" placeholder="بحث بالمرجع">
-                <label class="{{ $labelClass }}">المرجع</label>
-            </div>
+<!-- المرجع -->
+<div class="{{ $containerClass }}">
+    <input type="text" wire:model.live.debounce.500ms="referenceFilter" class="{{ $fieldClass }}" placeholder="بحث بالمرجع">
+    <label class="{{ $labelClass }}">المرجع</label>
+</div>
         </div>
 
 <div class="flex flex-col md:flex-row justify-end items-center gap-2 mt-3">
