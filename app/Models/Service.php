@@ -14,4 +14,9 @@ class Service extends Model
     {
         return $this->belongsTo(Agency::class);
     }
+    public function serviceType()
+{
+    return $this->belongsTo(\App\Models\ServiceType::class);
+}
+
 }

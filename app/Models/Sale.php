@@ -43,7 +43,19 @@ class Sale extends Model
         return $this->belongsTo(Account::class);
     }
 
+    public function collections()
+    {
+        return $this->hasMany(\App\Models\Collection::class);
+    }
 
+public function services()
+{
+    return $this->hasMany(\App\Models\Service::class);
+}
+public function items()
+{
+    return $this->hasMany(SaleItem::class); // أو الاسم الصحيح
+}
 
 
 }

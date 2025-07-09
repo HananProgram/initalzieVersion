@@ -22,6 +22,12 @@ class Index extends Component
     
     public $editingSale = null;
     public $currency;
+    public $totalAmount = 0;           // إجمالي البيع
+    public $totalReceived = 0;         // ما تم تحصيله
+    public $totalPending = 0;          // المبالغ الآجلة
+    public $totalProfit = 0;           // إجمالي الربح
+    public $amount_due = 0; // المبلغ المتبقي
+
 
 public function mount()
 {
@@ -130,22 +136,27 @@ public function mount()
         $intermediaries = Intermediary::all();
         $customers = Customer::all();
         $accounts = Account::all();
+        //$salesQuery = Sale::where('agency_id', Auth::user()->agency_id);
+        $salesQuery = Sale::where('agency_id', Auth::user()->agency_id)
+            ->whereDate('sale_date', now()->toDateString());
+
+        // إجمالي البيع = مجموع usd_sell
+        $this->totalAmount = $salesQuery->sum('usd_sell');
+
+        // المبلغ المحصل = amount_received
+        $this->totalReceived = $salesQuery->sum('amount_received');
+
+        // الآجل = إجمالي البيع - المحصل
+        $this->totalPending = $this->totalAmount - $this->totalReceived;
+
+        // الربح الإجمالي
+        $this->totalProfit = $salesQuery->sum('sale_profit');
 
         return view('livewire.sales.index', compact('sales', 'serviceTypes', 'providers', 'intermediaries', 'customers', 'accounts'))
             ->layout('layouts.agency');
     }
 
   
-
-    public function updatedUsdBuy()
-    {
-        $this->calculateProfit();
-    }
-
-    public function updatedUsdSell()
-    {
-        $this->calculateProfit();
-    }
 
     public function calculateProfit()
     {
@@ -155,4 +166,35 @@ public function mount()
             $this->sale_profit = 0;
         }
     }
+
+
+
+    public function updatedUsdSell()
+    {
+        $this->calculateDue();
+        $this->calculateProfit();
+    }
+
+        public function calculateDue()
+        {
+            if (is_numeric($this->usd_sell) && is_numeric($this->amount_received)) {
+                $this->amount_due = round($this->usd_sell - $this->amount_received, 2);
+            } else {
+                $this->amount_due = 0;
+            }
+        }
+    public function updated($propertyName)
+    {
+        if (in_array($propertyName, ['usd_buy', 'usd_sell'])) {
+            $this->calculateProfit();
+            $this->calculateDue();    
+        }
+
+        if ($propertyName === 'amount_received') {
+            $this->calculateDue(); 
+        }
+    }
+
+
+
 }

@@ -1,26 +1,53 @@
+<div>
 <div class="space-y-6">
     <!-- العنوان الرئيسي -->
-    <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold" style="color: rgb(var(--primary-700)); border-bottom: 2px solid rgba(var(--primary-200), 0.5); padding-bottom: 0.5rem;">
-            إدارة المبيعات
-        </h2>
-        <div class="flex gap-2">
-            <button wire:click="resetFields"
-                class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold px-4 py-2 rounded-xl shadow transition duration-300 text-sm">
-                تنظيف الحقول
-            </button>
-            <button type="button" onclick="openReportModal('pdf')"
-                class="text-white font-bold px-4 py-2 rounded-xl shadow-md transition duration-300 text-sm"
-                style="background: linear-gradient(to right, rgb(var(--primary-500)) 0%, rgb(var(--primary-600)) 100%);">
-                تقرير PDF
-            </button>
-            <button type="button" onclick="openReportModal('excel')"
-                class="text-white font-bold px-4 py-2 rounded-xl shadow-md transition duration-300 text-sm"
-                style="background: linear-gradient(to right, rgb(var(--primary-500)) 0%, rgb(var(--primary-600)) 100%);">
-                تقرير Excel
-            </button>
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+    <!-- العنوان -->
+    <h2 class="text-2xl font-bold"
+        style="color: rgb(var(--primary-700)); border-bottom: 2px solid rgba(var(--primary-200), 0.5); padding-bottom: 0.5rem;">
+        إدارة المبيعات
+    </h2>
+
+   <!-- كارد الإحصائيات -->
+    <div class="bg-white rounded-xl shadow-md border px-6 py-4 flex flex-wrap gap-6 items-center text-sm font-bold text-gray-700 w-full lg:w-auto">
+        <div class="flex items-center gap-1">
+            <span class="text-[rgb(var(--primary-600))]">إجمالي:</span>
+            <span>{{ number_format($totalAmount, 2) }} {{ $currency }}</span>
+        </div>
+        <div class="flex items-center gap-1">
+            <span class="text-[rgb(var(--primary-600))]">محصلة:</span>
+            <span>{{ number_format($totalReceived, 2) }} {{ $currency }}</span>
+        </div>
+        <div class="flex items-center gap-1">
+            <span class="text-[rgb(var(--primary-600))]">آجلة:</span>
+            <span>{{ number_format($totalPending, 2) }} {{ $currency }}</span>
+        </div>
+        <div class="flex items-center gap-1">
+            <span class="text-[rgb(var(--primary-600))]">الربح:</span>
+            <span>{{ number_format($totalProfit, 2) }} {{ $currency }}</span>
         </div>
     </div>
+
+
+    <!-- أزرار التحكم -->
+    <div class="flex gap-2 flex-wrap">
+        <button wire:click="resetFields"
+            class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold px-4 py-2 rounded-xl shadow transition duration-300 text-sm">
+            تنظيف الحقول
+        </button>
+        <button type="button" onclick="openReportModal('pdf')"
+            class="text-white font-bold px-4 py-2 rounded-xl shadow-md transition duration-300 text-sm"
+            style="background: linear-gradient(to right, rgb(var(--primary-500)) 0%, rgb(var(--primary-600)) 100%);">
+            تقرير PDF
+        </button>
+        <button type="button" onclick="openReportModal('excel')"
+            class="text-white font-bold px-4 py-2 rounded-xl shadow-md transition duration-300 text-sm"
+            style="background: linear-gradient(to right, rgb(var(--primary-500)) 0%, rgb(var(--primary-600)) 100%);">
+            تقرير Excel
+        </button>
+    </div>
+</div>
+
 
     <!-- نموذج الإضافة -->
     <div class="bg-white rounded-xl shadow-md p-4">
@@ -111,7 +138,7 @@
             </div>
 
             <!-- الصف الثالث -->
-            <div class="grid md:grid-cols-4 gap-3">
+         <div class="grid md:grid-cols-4 gap-3">
             <div class="{{ $containerClass }}">
                 <input type="number" wire:model="usd_buy" wire:change="calculateProfit" step="0.01" class="{{ $fieldClass }}" placeholder="USD Buy" />
                 <label class="{{ $labelClass }}">USD Buy</label>
@@ -119,7 +146,8 @@
             </div>
 
             <div class="{{ $containerClass }}">
-                <input type="number" wire:model="usd_sell" wire:change="calculateProfit" step="0.01" class="{{ $fieldClass }}" placeholder="USD Sell" />
+              <input type="number" wire:model="usd_sell" wire:change="calculateProfit" step="0.01" class="{{ $fieldClass }}" placeholder="USD Sell" />
+
                 <label class="{{ $labelClass }}">USD Sell</label>
                 @error('usd_sell') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
             </div>
@@ -130,11 +158,26 @@
                 @error('sale_profit') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
             </div>
 
-                <div class="{{ $containerClass }}">
-                    <input type="number" wire:model="amount_received" class="{{ $fieldClass }}" step="0.01" placeholder="المبلغ المدفوع" />
-                    <label class="{{ $labelClass }}">المبلغ المدفوع</label>
-                    @error('amount_received') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
-                </div>
+                <div class="flex items-center gap-2">
+                    <div class="flex-1 relative">
+                    <input type="number" wire:model="amount_received" wire:change="calculateDue"
+                       class="{{ $fieldClass }}" step="0.01" placeholder="المبلغ المدفوع" />
+                        <label class="{{ $labelClass }}">المبلغ المدفوع</label>
+                        @error('amount_received') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="text-xs mt-1 font-semibold"
+                style="color: rgb(var(--primary-600));">
+                <span>المتبقي:</span>
+                <span>{{ number_format($amount_due, 2) }}</span>
+            </div>
+        </div>
+
+
+
+
+</div>
+
             </div>
 
             <!-- الصف الرابع -->
@@ -489,3 +532,4 @@
         closeReportModal();
     }
 </script>
+</div>

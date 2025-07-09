@@ -42,4 +42,12 @@ class DynamicListItemSub extends Model
     {
         return $this->item->label . ' > ' . $this->label;
     }
+
+    public function parentItem()
+{
+    return $this->belongsTo(\App\Models\DynamicListItem::class, 'dynamic_list_item_id');
+}
+
+
+
 }

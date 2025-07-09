@@ -396,6 +396,21 @@
     </a>
 </div>
 
+
+       <div class="nav-item flex items-center px-2 py-1 rounded-full {{ request()->routeIs('agency.collections') ? 'active' : '' }}">
+
+
+        <a href="{{ route('agency.collections') }}" class="flex items-center">
+
+        <span class="nav-icon">
+            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </span>
+        <span class="nav-text text-xs text-white whitespace-nowrap mr-2">التحصيل </span>
+    </a>
+</div>
+
         </div>
 
         <!-- Theme Selector -->

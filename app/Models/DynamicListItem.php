@@ -67,4 +67,11 @@ class DynamicListItem extends Model
     {
         return $this->subItems()->count(); // جميع البنود تعتبر نشطة
     }
+    // app/Models/DynamicListItem.php
+
+public function dynamicList()
+{
+    return $this->belongsTo(\App\Models\DynamicList::class, 'dynamic_list_id');
+}
+
 }
