@@ -6,10 +6,21 @@ use Livewire\Component;
 use App\Models\Sale;
 use Illuminate\Support\Facades\Auth;
 use App\Models\DynamicListItemSub;
-use App\Models\DynamicList;
+
 class ShowCollectionDetails extends Component
 {
     public $sale;
+    public $services = [];
+    public $saleId;
+    public $totalAmount = 0;
+    public $amountReceived = 0;
+    public $remainingAmount = 0;
+    public $showEditModal = false;
+    public $paidAmount;
+    public $paidFromSales = 0;
+    public $paidFromCollections = 0;
+    public $paidTotal = 0;
+    public $payRemainingNow = 0;
 
     public function mount($sale)
     {
@@ -23,16 +34,19 @@ class ShowCollectionDetails extends Component
         ->where('agency_id', Auth::user()->agency_id)
         ->findOrFail($sale);
 
+        $this->calculateAmounts();
+    }
+
+    // دالة جديدة لحساب المبالغ
+    protected function calculateAmounts()
+    {
         $this->totalAmount = $this->sale->usd_sell ?? 0;
         $this->paidFromSales = $this->sale->amount_received ?? 0;
         $this->paidFromCollections = $this->sale->collections->sum('amount');
         $this->paidTotal = $this->paidFromSales + $this->paidFromCollections;
-
-        // تحديث قيمة المتغيرات المعروضة:
         $this->amountReceived = $this->paidTotal;
         $this->remainingAmount = $this->totalAmount - $this->paidTotal;
     }
-
 
     public function render()
     {
@@ -40,29 +54,11 @@ class ShowCollectionDetails extends Component
             ->layout('layouts.agency');
     }
 
-    public $services = [];
-    public $saleId;
-    public $totalAmount = 0; // قيمة الفاتورة
-    public $amountReceived = 0; // المدفوع
-    public $remainingAmount = 0; // المتبقي
-    public $showEditModal = false;
-    public $paidAmount;
-    public $paidFromSales = 0;
-    public $paidFromCollections = 0;
-    public $paidTotal = 0;
-    public $payRemainingNow = 0;
-
     public function openEditAmountModal($saleId)
     {
         $this->sale = Sale::with('collections')->findOrFail($saleId);
+        $this->calculateAmounts(); // استدعاء الدالة الجديدة
 
-        $this->totalAmount = $this->sale->usd_sell ?? 0;
-        $this->paidFromSales = $this->sale->amount_received ?? 0;
-        $this->paidFromCollections = $this->sale->collections->sum('amount');
-        $this->paidTotal = $this->paidFromSales + $this->paidFromCollections;
-        $this->remainingAmount = $this->totalAmount - $this->paidTotal;
-
-        // إذا لم يتبقى شيء، لا تفتح النافذة
         if ($this->remainingAmount <= 0) {
             session()->flash('message', 'تم سداد كامل المبلغ، لا يمكن التحصيل.');
             return;
@@ -81,7 +77,6 @@ class ShowCollectionDetails extends Component
     {
         $totalServiceAmount = collect($this->services)->sum('amount');
         $payAmount = $this->payRemainingNow ?? 0;
-
         $totalToPay = $totalServiceAmount + $payAmount;
 
         if ($totalToPay > $this->remainingAmount) {
@@ -102,13 +97,17 @@ class ShowCollectionDetails extends Component
             'note' => 'تحصيل تلقائي لباقي المبلغ.',
         ]);
 
+        // تحديث البيانات بعد الحفظ
+        $this->sale->refresh();
+        $this->calculateAmounts();
+        
         $this->showEditModal = false;
-        session()->flash('success', 'تم تسجيل التحصيل بنجاح.');
+        $this->dispatch('amountsUpdated'); // إرسال حدث لتحديث الواجهة
+        session()->flash('message', 'تم تسجيل التحصيل بنجاح.');
     }
 
     public function cancelEdit()
     {
         $this->reset(['showEditModal', 'services', 'payRemainingNow']);
     }
-
 }

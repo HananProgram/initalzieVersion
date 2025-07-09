@@ -318,4 +318,12 @@ $colors = ThemeService::getCurrentThemeColors($themeName);
         border-color: rgba(var(--primary-100), 1);
     }
 </style>
+<script>
+    document.addEventListener('livewire:initialized', () => {
+        Livewire.on('amountsUpdated', () => {
+            // لا حاجة لعمل أي شيء، البيانات سيتم تحديثها تلقائياً
+            console.log('تم تحديث المبالغ بنجاح');
+        });
+    });
+</script>
 </div>
