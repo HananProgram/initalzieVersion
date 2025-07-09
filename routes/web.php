@@ -96,8 +96,6 @@ Route::middleware(['auth', 'agency'])->prefix('agency')->group(function () {
             ->name('agency.sales.report.pdf');
   Route::get('/collections', \App\Livewire\Agency\Collections::class)
     ->name('agency.collections');
-Route::get('/collections/{sale}', \App\Livewire\Agency\ShowCollectionDetails::class)
-    ->name('agency.collection.details');
 
             // تقرير Excel
             Route::get('/excel', function (Request $request) {
